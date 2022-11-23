@@ -23,4 +23,17 @@ export class UserResolver {
   getUser(@Args('id') id: string) {
     return this.userService.getUser(id);
   }
+
+  @Mutation(() => UserModel)
+  updateUser(
+    @Args('id') id: string,
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ) {
+    return this.userService.updateUser(id, createUserInput);
+  }
+
+  @Mutation(() => UserModel)
+  deleteUser(@Args('id') id: string) {
+    return this.userService.deleteUser(id);
+  }
 }

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserModel } from './model/user.model';
 import * as crypto from 'crypto';
+import { where } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -39,6 +40,43 @@ export class UserService {
   public async getUser(id: string): Promise<UserModel> {
     const user = await this.userModel.findOne({ where: { id } });
     return user;
+  }
+
+  public async updateUser(
+    id: string,
+    user: CreateUserInput,
+  ): Promise<UserModel> {
+    const userInput = await this.userModel.findOne({ where: { id } });
+    if (!userInput) {
+      throw new NotFoundException(`user with ${id} not found`);
+    } else {
+      userInput.email = this.normalizeEmail(user.email);
+      userInput.firstname = user.firstname;
+      userInput.lastname = user.lastname;
+      userInput.username = user.username;
+      userInput.password = this.hashPassword(user.password);
+      userInput.state = user.state;
+      userInput.status = user.status;
+      userInput.city = user.city;
+      userInput.country = user.country;
+      userInput.address1 = user.address1;
+      userInput.address2 = user.address2;
+
+      const a = await this.userModel.update(userInput.dataValues, {
+        where: { id },
+      });
+      return userInput;
+    }
+  }
+
+  public async deleteUser(id: string): Promise<UserModel> {
+    const userDetails = await this.userModel.findOne({ where: { id } });
+    if (!userDetails) {
+      throw new NotFoundException(`user with ${id} not found`);
+    } else {
+      await this.userModel.destroy({ where: { id } });
+      return userDetails;
+    }
   }
 
   private hashPassword(pwd: string): string {
