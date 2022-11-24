@@ -5,6 +5,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './user/user.module';
+import { CelestialPostModule } from './celestial-post/celestial-post.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { UserModule } from './user/user.module';
       },
     }),
     UserModule,
+    CelestialPostModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

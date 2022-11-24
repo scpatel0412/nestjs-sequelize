@@ -5,7 +5,6 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserModel } from './model/user.model';
 import * as crypto from 'crypto';
-import { where } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -33,12 +32,16 @@ export class UserService {
   }
 
   public async getUsers(): Promise<Array<UserModel>> {
-    const user = await this.userModel.findAll();
+    const user = await this.userModel
+      .scope([{ method: ['celestialPosts'] }])
+      .findAll();
     return user;
   }
 
   public async getUser(id: string): Promise<UserModel> {
-    const user = await this.userModel.findOne({ where: { id } });
+    const user = await this.userModel
+      .scope([{ method: ['celestialPosts'] }])
+      .findOne({ where: { id } });
     return user;
   }
 
