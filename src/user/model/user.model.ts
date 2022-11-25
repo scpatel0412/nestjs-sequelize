@@ -4,11 +4,27 @@ import {
   Column,
   CreatedAt,
   DataType,
+  HasMany,
   Model,
+  Scopes,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
 
+@Scopes({
+  celestialPosts: () => {
+    return {
+      include: {
+        model: CelestialPostModel,
+        as: 'celestialPosts',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+})
 @ObjectType('User')
 @Table({ modelName: 'users' })
 export class UserModel extends Model<UserModel> {
@@ -98,4 +114,8 @@ export class UserModel extends Model<UserModel> {
 
   @UpdatedAt
   updated_at: Date;
+
+  @Field(() => [CelestialPostModel], { nullable: true })
+  @HasMany(() => CelestialPostModel)
+  celestialPosts: CelestialPostModel[];
 }

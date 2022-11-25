@@ -1,1 +1,5 @@
 create table users (id uuid default uuid_generate_v4(),email varchar unique not null,password varchar not null,username varchar unique not null,firstname varchar not null,lastname varchar not null,state varchar not null,city varchar not null,country varchar not null,address1 varchar not null,status boolean,address2 varchar not null,created_at date,updated_at date,PRIMARY KEY(id));
+
+create table celestial_posts(id uuid default uuid_generate_v4(),image varchar not null,title varchar not null,description varchar not null,metaTitle varchar not null,metaDescription varchar not null,status boolean,created_at date,updated_at date,user_id uuid,PRIMARY KEY(id),CONSTRAINT fk_users FOREIGN KEY(user_id) REFERENCES users(id));
+ALTER TABLE celestial_post RENAME TO celestial_posts;
+drop table celestial_posts;

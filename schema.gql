@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CelestialPost {
+  id: String!
+  image: String!
+  title: String!
+  description: String!
+  metatitle: String!
+  metadescription: String!
+  status: Boolean!
+  users: User!
+}
+
 type User {
   id: String!
   email: String!
@@ -15,17 +26,39 @@ type User {
   country: String!
   password: String!
   status: Boolean!
+  celestialPosts: [CelestialPost!]
+}
+
+type UserCount {
+  count: Int!
+}
+
+type Auth {
+  token: String!
+  user: User!
+}
+
+type CelestialPostCount {
+  count: Int!
 }
 
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
+  userCount: UserCount!
+  getPosts: [CelestialPost!]!
+  getPost(id: String!): CelestialPost!
+  postCount: CelestialPostCount!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(id: String!, createUserInput: CreateUserInput!): User!
   deleteUser(id: String!): User!
+  signIn(email: String!, password: String!): Auth!
+  createPost(createCelestialPostInput: CreateCelestialPostInput!): CelestialPost!
+  updatePost(id: String!, updateCelestialPostInput: UpdateCelestialPostInput!): CelestialPost!
+  deletePost(id: String!): CelestialPost!
 }
 
 input CreateUserInput {
@@ -39,5 +72,24 @@ input CreateUserInput {
   state: String!
   country: String!
   password: String!
+  status: Boolean!
+}
+
+input CreateCelestialPostInput {
+  image: String!
+  title: String!
+  description: String!
+  metatitle: String!
+  metadescription: String!
+  status: Boolean!
+  userId: String!
+}
+
+input UpdateCelestialPostInput {
+  image: String!
+  title: String!
+  description: String!
+  metatitle: String!
+  metadescription: String!
   status: Boolean!
 }

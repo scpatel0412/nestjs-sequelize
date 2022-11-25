@@ -2,15 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 import { UserModel } from './model/user.model';
 import * as crypto from 'crypto';
-import { where } from 'sequelize';
+import { AuthService } from 'src/auth/auth.service';
+import { UserAuthModel } from './model/user-auth.model';
+import { UserCountModel } from './model/user-count.model';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(UserModel) private userModel: typeof UserModel,
+    private authService: AuthService,
     private sequelize: Sequelize,
   ) {}
 
@@ -33,12 +35,16 @@ export class UserService {
   }
 
   public async getUsers(): Promise<Array<UserModel>> {
-    const user = await this.userModel.findAll();
+    const user = await this.userModel
+      .scope([{ method: ['celestialPosts'] }])
+      .findAll();
     return user;
   }
 
   public async getUser(id: string): Promise<UserModel> {
-    const user = await this.userModel.findOne({ where: { id } });
+    const user = await this.userModel
+      .scope([{ method: ['celestialPosts'] }])
+      .findOne({ where: { id } });
     return user;
   }
 
@@ -67,6 +73,30 @@ export class UserService {
       });
       return userInput;
     }
+  }
+
+  public async signIn(email: string, password: string): Promise<UserAuthModel> {
+    const pass = this.hashPassword(password);
+    const user = await this.userModel.findOne({
+      where: { email, password: pass },
+    });
+    console.log('user', user);
+    if (!user) {
+      throw new NotFoundException(`${email} not found`);
+    } else {
+      const token = await this.authService.createAccessToken({
+        sub: user.id,
+        email: user.email,
+      });
+      return { user, token };
+    }
+  }
+
+  public async userCount(): Promise<UserCountModel> {
+    const count = await this.userModel.count();
+    const count1 = new UserCountModel();
+    count1.count = count;
+    return count1;
   }
 
   public async deleteUser(id: string): Promise<UserModel> {
