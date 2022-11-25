@@ -3,3 +3,4 @@ create table users (id uuid default uuid_generate_v4(),email varchar unique not 
 create table celestial_posts(id uuid default uuid_generate_v4(),image varchar not null,title varchar not null,description varchar not null,metaTitle varchar not null,metaDescription varchar not null,status boolean,created_at date,updated_at date,user_id uuid,PRIMARY KEY(id),CONSTRAINT fk_users FOREIGN KEY(user_id) REFERENCES users(id));
 ALTER TABLE celestial_post RENAME TO celestial_posts;
 drop table celestial_posts;
+create table post_likes(id uuid default uuid_generate_v4(),email varchar not null,description varchar not null,likes boolean,status boolean,created_at date,updated_at date,post_id uuid,PRIMARY KEY(id),CONSTRAINT fk_celestial_posts FOREIGN KEY(post_id) REFERENCES celestial_posts(id));

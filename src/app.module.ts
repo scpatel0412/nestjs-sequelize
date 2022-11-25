@@ -35,7 +35,7 @@ import { PostLikeModule } from './post-like/post-like.module';
     UserModule,
     CelestialPostModule,
     AuthModule,
-    // PostLikeModule,
+    PostLikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -26,7 +26,7 @@ import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.mode
   },
 })
 @ObjectType('PostLike')
-@Table({ modelName: 'post-likes' })
+@Table({ modelName: 'post_likes' })
 export class PostLikeModel extends Model<PostLikeModel> {
   @Field(() => String)
   @Column({
@@ -57,7 +57,7 @@ export class PostLikeModel extends Model<PostLikeModel> {
     type: DataType.BOOLEAN,
     allowNull: false,
   })
-  like: boolean;
+  likes: boolean;
 
   @Field(() => Boolean)
   @Column({

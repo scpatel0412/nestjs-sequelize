@@ -1,12 +1,11 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { PostLikeService } from './post-like.service';
-import { PostLike } from './entities/post-like.entity';
 import { CreatePostLikeInput } from './dto/create-post-like.input';
 import { UpdatePostLikeInput } from './dto/update-post-like.input';
 import { PostLikeModel } from './model/post-like.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 
-@Resolver(() => PostLike)
+@Resolver(() => PostLikeModel)
 export class PostLikeResolver {
   constructor(private readonly postLikeService: PostLikeService) {}
 
@@ -28,5 +27,20 @@ export class PostLikeResolver {
   @Query(() => PostLikeModel)
   getLike(@Args('id') id: string) {
     return this.postLikeService.getLike(id);
+  }
+
+  @AllowUnauthorized()
+  @Mutation(() => PostLikeModel)
+  updateLike(
+    @Args('id') id: string,
+    @Args('updatePostLikeInput') updatePostLikeInput: UpdatePostLikeInput,
+  ) {
+    return this.postLikeService.updateLike(id, updatePostLikeInput);
+  }
+
+  @AllowUnauthorized()
+  @Mutation(() => PostLikeModel)
+  deleteLike(@Args('id') id: string) {
+    return this.postLikeService.deleteLike(id);
   }
 }

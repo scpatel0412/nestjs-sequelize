@@ -16,7 +16,7 @@ export class CreatePostLikeInput {
   @IsNotEmpty()
   @IsBoolean()
   @Field(() => Boolean)
-  like: boolean;
+  likes: boolean;
 
   @IsNotEmpty()
   @IsBoolean()

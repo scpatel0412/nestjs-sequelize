@@ -1,8 +1,25 @@
-import { CreatePostLikeInput } from './create-post-like.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
+import { IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 
 @InputType()
-export class UpdatePostLikeInput extends PartialType(CreatePostLikeInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdatePostLikeInput {
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  description: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  @Field(() => Boolean)
+  likes: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  @Field(() => Boolean)
+  status: boolean;
 }
