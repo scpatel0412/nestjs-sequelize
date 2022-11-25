@@ -5,6 +5,7 @@ import { CreateCelestialPostInput } from './dto/create-celestial-post.input';
 import { UpdateCelestialPostInput } from './dto/update-celestial-post.input';
 import { CelestialPostModel } from './model/celestial-post.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
+import { CelestialPostCountModel } from './model/celestial-post-count.model';
 
 @Resolver(() => CelestialPost)
 export class CelestialPostResolver {
@@ -45,5 +46,11 @@ export class CelestialPostResolver {
   @Mutation(() => CelestialPostModel)
   deletePost(@Args('id') id: string) {
     return this.celestialPostService.deletePost(id);
+  }
+
+  @AllowUnauthorized()
+  @Query(() => CelestialPostCountModel)
+  postCount() {
+    return this.celestialPostService.postCount();
   }
 }

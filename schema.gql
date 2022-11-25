@@ -29,17 +29,33 @@ type User {
   celestialPosts: [CelestialPost!]
 }
 
+type UserCount {
+  count: Int!
+}
+
+type Auth {
+  token: String!
+  user: User!
+}
+
+type CelestialPostCount {
+  count: Int!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
+  userCount: UserCount!
   getPosts: [CelestialPost!]!
   getPost(id: String!): CelestialPost!
+  postCount: CelestialPostCount!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(id: String!, createUserInput: CreateUserInput!): User!
   deleteUser(id: String!): User!
+  signIn(email: String!, password: String!): Auth!
   createPost(createCelestialPostInput: CreateCelestialPostInput!): CelestialPost!
   updatePost(id: String!, updateCelestialPostInput: UpdateCelestialPostInput!): CelestialPost!
   deletePost(id: String!): CelestialPost!

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { CreateCelestialPostInput } from './dto/create-celestial-post.input';
 import { UpdateCelestialPostInput } from './dto/update-celestial-post.input';
+import { CelestialPostCountModel } from './model/celestial-post-count.model';
 import { CelestialPostModel } from './model/celestial-post.model';
 
 @Injectable()
@@ -78,5 +79,12 @@ export class CelestialPostService {
       await this.celestialPostModel.destroy({ where: { id } });
       return postDetails;
     }
+  }
+
+  public async postCount(): Promise<CelestialPostCountModel> {
+    const count = await this.celestialPostModel.count();
+    const count1 = new CelestialPostCountModel();
+    count1.count = count;
+    return count1;
   }
 }
