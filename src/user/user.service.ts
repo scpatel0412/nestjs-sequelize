@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { CreateUserInput } from './dto/create-user.input';
@@ -7,6 +11,7 @@ import * as crypto from 'crypto';
 import { AuthService } from 'src/auth/auth.service';
 import { UserAuthModel } from './model/user-auth.model';
 import { UserCountModel } from './model/user-count.model';
+import { UserResetPasswordModel } from './model/user-reset-password.model';
 
 @Injectable()
 export class UserService {
@@ -17,21 +22,29 @@ export class UserService {
   ) {}
 
   public async createUser(user: CreateUserInput): Promise<UserModel> {
-    console.log(user);
-    const user1 = new UserModel();
-    user1.email = this.normalizeEmail(user.email);
-    user1.firstname = user.firstname;
-    user1.lastname = user.lastname;
-    user1.username = user.username;
-    user1.password = this.hashPassword(user.password);
-    user1.state = user.state;
-    user1.status = user.status;
-    user1.city = user.city;
-    user1.country = user.country;
-    user1.address1 = user.address1;
-    user1.address2 = user.address2;
-    const userContent = await this.userModel.create(user1.dataValues);
-    return userContent;
+    const emailCheck = this.normalizeEmail(user.email);
+    const findUser = await this.userModel.findOne({
+      where: { email: emailCheck },
+    });
+    if (findUser) {
+      throw new ConflictException(`${emailCheck} already exists`);
+    } else {
+      console.log(user);
+      const user1 = new UserModel();
+      user1.email = this.normalizeEmail(user.email);
+      user1.firstname = user.firstname;
+      user1.lastname = user.lastname;
+      user1.username = user.username;
+      user1.password = this.hashPassword(user.password);
+      user1.state = user.state;
+      user1.status = user.status;
+      user1.city = user.city;
+      user1.country = user.country;
+      user1.address1 = user.address1;
+      user1.address2 = user.address2;
+      const userContent = await this.userModel.create(user1.dataValues);
+      return userContent;
+    }
   }
 
   public async getUsers(): Promise<Array<UserModel>> {
@@ -106,6 +119,24 @@ export class UserService {
     } else {
       await this.userModel.destroy({ where: { id } });
       return userDetails;
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+    password: string,
+  ): Promise<UserResetPasswordModel> {
+    const user = await this.userModel.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(`${email} not found`);
+    } else {
+      const reset = this.hashPassword(password);
+      user.password = reset;
+      await user.save();
+      const message = new UserResetPasswordModel();
+      message.message = 'Password changed successfully';
+      message.change = true;
+      return message;
     }
   }
 

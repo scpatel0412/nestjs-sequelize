@@ -1,6 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import {
-  AllowNull,
   Column,
   CreatedAt,
   DataType,

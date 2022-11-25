@@ -35,14 +35,14 @@ export class CelestialPostService {
 
   public async getPosts(): Promise<Array<CelestialPostModel>> {
     const postsResults = await this.celestialPostModel
-      .scope([{ method: ['users'] }])
+      .scope([{ method: ['users'] }, { method: ['likes'] }])
       .findAll();
     return postsResults;
   }
 
   public async getPost(id: string): Promise<CelestialPostModel> {
     const postsResults = await this.celestialPostModel
-      .scope([{ method: ['users'] }])
+      .scope([{ method: ['users'] }, { method: ['likes'] }])
       .findOne({ where: { id } });
     return postsResults;
   }

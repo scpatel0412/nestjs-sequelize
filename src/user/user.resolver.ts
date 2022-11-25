@@ -5,6 +5,7 @@ import { UserModel } from './model/user.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 import { UserAuthModel } from './model/user-auth.model';
 import { UserCountModel } from './model/user-count.model';
+import { UserResetPasswordModel } from './model/user-reset-password.model';
 
 @Resolver(() => UserModel)
 export class UserResolver {
@@ -53,5 +54,14 @@ export class UserResolver {
   @Query(() => UserCountModel)
   userCount() {
     return this.userService.userCount();
+  }
+
+  @AllowUnauthorized()
+  @Mutation(() => UserResetPasswordModel)
+  resetPassword(
+    @Args('email') email: string,
+    @Args('password') password: string,
+  ) {
+    return this.userService.resetPassword(email, password);
   }
 }

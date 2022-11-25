@@ -33,6 +33,11 @@ type UserCount {
   count: Int!
 }
 
+type UserResetPassword {
+  message: String!
+  change: Boolean!
+}
+
 type Auth {
   token: String!
   user: User!
@@ -56,6 +61,7 @@ type Mutation {
   updateUser(id: String!, createUserInput: CreateUserInput!): User!
   deleteUser(id: String!): User!
   signIn(email: String!, password: String!): Auth!
+  resetPassword(email: String!, password: String!): UserResetPassword!
   createPost(createCelestialPostInput: CreateCelestialPostInput!): CelestialPost!
   updatePost(id: String!, updateCelestialPostInput: UpdateCelestialPostInput!): CelestialPost!
   deletePost(id: String!): CelestialPost!
