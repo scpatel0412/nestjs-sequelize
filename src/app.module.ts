@@ -7,6 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './user/user.module';
 import { CelestialPostModule } from './celestial-post/celestial-post.module';
 import { AuthModule } from './auth/auth.module';
+import { PostLikeModule } from './post-like/post-like.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     CelestialPostModule,
     AuthModule,
+    PostLikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

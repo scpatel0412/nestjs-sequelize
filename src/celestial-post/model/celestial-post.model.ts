@@ -5,11 +5,13 @@ import {
   CreatedAt,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Scopes,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { PostLikeModel } from 'src/post-like/model/post-like.model';
 import { UserModel } from '../../user/model/user.model';
 
 @Scopes({
@@ -18,6 +20,17 @@ import { UserModel } from '../../user/model/user.model';
       include: {
         model: UserModel,
         as: 'users',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  likes: () => {
+    return {
+      include: {
+        model: PostLikeModel,
+        as: 'likes',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -93,4 +106,8 @@ export class CelestialPostModel extends Model<CelestialPostModel> {
   @Field(() => UserModel)
   @BelongsTo(() => UserModel)
   users: UserModel;
+
+  @Field(() => [PostLikeModel], { nullable: true })
+  @HasMany(() => PostLikeModel)
+  likes: PostLikeModel[];
 }

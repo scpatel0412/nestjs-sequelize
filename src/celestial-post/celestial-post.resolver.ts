@@ -1,13 +1,12 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CelestialPostService } from './celestial-post.service';
-import { CelestialPost } from './entities/celestial-post.entity';
 import { CreateCelestialPostInput } from './dto/create-celestial-post.input';
 import { UpdateCelestialPostInput } from './dto/update-celestial-post.input';
 import { CelestialPostModel } from './model/celestial-post.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 import { CelestialPostCountModel } from './model/celestial-post-count.model';
 
-@Resolver(() => CelestialPost)
+@Resolver(() => CelestialPostModel)
 export class CelestialPostResolver {
   constructor(private readonly celestialPostService: CelestialPostService) {}
 
