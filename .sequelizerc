@@ -1,0 +1,9 @@
+'use strict';
+const path = require('path');
+require('dotenv').config();
+module.exports = {
+  url: `postgres://${process.env.POSTGRES_USERNAME}:${process.env.POSTGRES_PASSWORD}:@${process.env.POSTGRES_HOST}:${process.env.POSTGRES_PORT}/${process.env.POSTGRES_DB}`,
+  'migrations-path': path.resolve('migrations'),
+  'seeders-path': path.resolve('seeders'),
+  'models-path': path.resolve('src', 'models'),
+};

@@ -4,9 +4,14 @@ import { UserResolver } from './user.resolver';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModel } from './model/user.model';
 import { AuthModule } from 'src/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [SequelizeModule.forFeature([UserModel]), AuthModule],
+  imports: [
+    ConfigModule.forRoot({ expandVariables: true }),
+    SequelizeModule.forFeature([UserModel]),
+    AuthModule,
+  ],
   providers: [UserResolver, UserService],
   exports: [UserService],
 })

@@ -11,6 +11,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { PostCommentModel } from 'src/post-comment/model/post-comment.model';
 import { PostLikeModel } from 'src/post-like/model/post-like.model';
 import { UserModel } from '../../user/model/user.model';
 
@@ -31,6 +32,17 @@ import { UserModel } from '../../user/model/user.model';
       include: {
         model: PostLikeModel,
         as: 'likes',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  comments: () => {
+    return {
+      include: {
+        model: PostCommentModel,
+        as: 'comments',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -110,4 +122,8 @@ export class CelestialPostModel extends Model<CelestialPostModel> {
   @Field(() => [PostLikeModel], { nullable: true })
   @HasMany(() => PostLikeModel)
   likes: PostLikeModel[];
+
+  @Field(() => [PostCommentModel], { nullable: true })
+  @HasMany(() => PostCommentModel)
+  comments: PostCommentModel[];
 }
