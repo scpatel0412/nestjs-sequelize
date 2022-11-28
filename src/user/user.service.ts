@@ -12,6 +12,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserAuthModel } from './model/user-auth.model';
 import { UserCountModel } from './model/user-count.model';
 import { UserResetPasswordModel } from './model/user-reset-password.model';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     @InjectModel(UserModel) private userModel: typeof UserModel,
     private authService: AuthService,
     private sequelize: Sequelize,
+    private readonly configService: ConfigService,
   ) {}
 
   public async createUser(user: CreateUserInput): Promise<UserModel> {
@@ -143,7 +145,7 @@ export class UserService {
   private hashPassword(pwd: string): string {
     return crypto
       .createHash('sha256')
-      .update(`${pwd}5hEidaaO7UyO15DC59qpViU5RmuIBrX8YC7jd3thEtw7WCQTx88PveS`)
+      .update(`${pwd}${this.configService.get<string>('SALT')}`)
       .digest('base64');
   }
 

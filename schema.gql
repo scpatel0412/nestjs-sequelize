@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type PostComment {
+  id: String!
+  email: String!
+  description: String!
+  comment: String!
+  status: Boolean!
+  posts: CelestialPost!
+}
+
 type PostLike {
   id: String!
   email: String!
@@ -21,6 +30,7 @@ type CelestialPost {
   status: Boolean!
   users: User!
   likes: [PostLike!]
+  comments: [PostComment!]
 }
 
 type User {
@@ -66,6 +76,8 @@ type Query {
   postCount: CelestialPostCount!
   getLikes: [PostLike!]!
   getLike(id: String!): PostLike!
+  getComment(id: String!): PostComment!
+  getComments: [PostComment!]!
 }
 
 type Mutation {
@@ -80,6 +92,9 @@ type Mutation {
   createLike(createPostLikeInput: CreatePostLikeInput!): PostLike!
   updateLike(id: String!, updatePostLikeInput: UpdatePostLikeInput!): PostLike!
   deleteLike(id: String!): PostLike!
+  createComment(createPostCommentInput: CreatePostCommentInput!): PostComment!
+  updateComment(id: String!, updatePostCommentInput: UpdatePostCommentInput!): PostComment!
+  deleteComment(id: String!): PostComment!
 }
 
 input CreateUserInput {
@@ -127,5 +142,20 @@ input UpdatePostLikeInput {
   email: String!
   description: String!
   likes: Boolean!
+  status: Boolean!
+}
+
+input CreatePostCommentInput {
+  email: String!
+  description: String!
+  comment: String!
+  status: Boolean!
+  postId: String!
+}
+
+input UpdatePostCommentInput {
+  email: String!
+  description: String!
+  comment: String!
   status: Boolean!
 }
