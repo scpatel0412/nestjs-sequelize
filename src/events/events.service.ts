@@ -67,12 +67,16 @@ export class EventsService {
   }
 
   public async getEvents(): Promise<Array<EventsModel>> {
-    const eventInput = await this.eventsModel.findAll();
+    const eventInput = await this.eventsModel
+      .scope([{ method: ['users'] }, { method: ['user_events'] }])
+      .findAll();
     return eventInput;
   }
 
   public async getEvent(id: string): Promise<EventsModel> {
-    const eventInput = await this.eventsModel.findOne({ where: { id } });
+    const eventInput = await this.eventsModel
+      .scope([{ method: ['users'] }, { method: ['user_events'] }])
+      .findOne({ where: { id } });
     return eventInput;
   }
 
