@@ -11,6 +11,7 @@ import { PostLikeModule } from './post-like/post-like.module';
 import { PostCommentModule } from './post-comment/post-comment.module';
 import * as Validation from '@hapi/joi';
 import { ConfigModule } from '@nestjs/config';
+import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -56,6 +57,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     PostLikeModule,
     PostCommentModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

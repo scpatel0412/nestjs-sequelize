@@ -33,6 +33,34 @@ type CelestialPost {
   comments: [PostComment!]
 }
 
+type UsersEvents {
+  id: String!
+  users: User!
+  events: Events!
+  is_active: Boolean!
+}
+
+type Events {
+  id: String!
+  image: String!
+  description: String!
+  title: String!
+  city: String!
+  status: Boolean!
+  country: String!
+  state: String!
+  contact: String!
+  event_date: DateTime!
+  event_time: String!
+  users: User!
+  user_events: [User!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: String!
   email: String!
@@ -47,6 +75,8 @@ type User {
   password: String!
   status: Boolean!
   celestialPosts: [CelestialPost!]
+  event_created: [Events!]
+  events_enroll: [Events!]
 }
 
 type UserCount {
@@ -78,6 +108,8 @@ type Query {
   getLike(id: String!): PostLike!
   getComment(id: String!): PostComment!
   getComments: [PostComment!]!
+  getEvents: [Events!]!
+  getEvent(id: String!): Events!
 }
 
 type Mutation {
@@ -95,6 +127,10 @@ type Mutation {
   createComment(createPostCommentInput: CreatePostCommentInput!): PostComment!
   updateComment(id: String!, updatePostCommentInput: UpdatePostCommentInput!): PostComment!
   deleteComment(id: String!): PostComment!
+  createEvent(createEventInput: CreateEventInput!): Events!
+  updateEvent(id: String!, updateEventInput: UpdateEventInput!): Events!
+  deleteEvent(id: String!): Events!
+  enrollEvents(createUsersEventInput: CreateUsersEventsInput!): UsersEvents!
 }
 
 input CreateUserInput {
@@ -158,4 +194,37 @@ input UpdatePostCommentInput {
   description: String!
   comment: String!
   status: Boolean!
+}
+
+input CreateEventInput {
+  image: String!
+  description: String!
+  title: String!
+  city: String!
+  status: Boolean!
+  country: String!
+  state: String!
+  contact: String!
+  event_date: DateTime!
+  event_time: String!
+  userId: String!
+}
+
+input UpdateEventInput {
+  image: String!
+  description: String!
+  title: String!
+  city: String!
+  status: Boolean!
+  country: String!
+  state: String!
+  contact: String!
+  event_date: DateTime!
+  event_time: String!
+}
+
+input CreateUsersEventsInput {
+  userId: String!
+  eventId: String!
+  is_active: Boolean!
 }

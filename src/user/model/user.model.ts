@@ -1,5 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import {
+  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -10,6 +11,8 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
+import { EventsModel } from 'src/events/model/events.model';
+import { UsersEventsModel } from 'src/events/model/users-events.model';
 
 @Scopes({
   celestialPosts: () => {
@@ -17,6 +20,28 @@ import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.mode
       include: {
         model: CelestialPostModel,
         as: 'celestialPosts',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  event_created: () => {
+    return {
+      include: {
+        model: EventsModel,
+        as: 'event_created',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  events_enroll: () => {
+    return {
+      include: {
+        model: EventsModel,
+        as: 'events_enroll',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -117,4 +142,12 @@ export class UserModel extends Model<UserModel> {
   @Field(() => [CelestialPostModel], { nullable: true })
   @HasMany(() => CelestialPostModel)
   celestialPosts: CelestialPostModel[];
+
+  @Field(() => [EventsModel], { nullable: true })
+  @HasMany(() => EventsModel)
+  event_created: EventsModel[];
+
+  @Field(() => [EventsModel], { nullable: true })
+  @BelongsToMany(() => EventsModel, () => UsersEventsModel)
+  events_enroll: EventsModel[];
 }
