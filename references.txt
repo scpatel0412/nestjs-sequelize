@@ -1,1 +1,2 @@
 https://stackoverflow.com/questions/68407525/many-to-one-using-sequelize-and-nestjs
+https://sebhastian.com/sequelize-belongstomany/

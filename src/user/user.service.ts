@@ -51,14 +51,14 @@ export class UserService {
 
   public async getUsers(): Promise<Array<UserModel>> {
     const user = await this.userModel
-      .scope([{ method: ['celestialPosts'] }])
+      .scope([{ method: ['celestialPosts'] }, { method: ['event_created'] }])
       .findAll();
     return user;
   }
 
   public async getUser(id: string): Promise<UserModel> {
     const user = await this.userModel
-      .scope([{ method: ['celestialPosts'] }])
+      .scope([{ method: ['celestialPosts'] }, { method: ['event_created'] }])
       .findOne({ where: { id } });
     return user;
   }
