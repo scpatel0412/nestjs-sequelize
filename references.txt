@@ -1,2 +1,3 @@
 https://stackoverflow.com/questions/68407525/many-to-one-using-sequelize-and-nestjs
 https://sebhastian.com/sequelize-belongstomany/
+https://victoronwuzor.medium.com/how-to-setup-sequelize-migration-in-a-nestjs-project-b4aec1f88612

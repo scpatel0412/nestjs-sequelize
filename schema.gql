@@ -50,6 +50,7 @@ type Events {
   country: String!
   state: String!
   contact: String!
+  address: String!
   event_date: DateTime!
   event_time: String!
   users: User!
@@ -205,6 +206,7 @@ input CreateEventInput {
   country: String!
   state: String!
   contact: String!
+  address: String!
   event_date: DateTime!
   event_time: String!
   userId: String!
@@ -215,6 +217,7 @@ input UpdateEventInput {
   description: String!
   title: String!
   city: String!
+  address: String!
   status: Boolean!
   country: String!
   state: String!

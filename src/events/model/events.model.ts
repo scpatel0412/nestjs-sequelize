@@ -6,6 +6,7 @@ import {
   CreatedAt,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Scopes,
   Table,
@@ -106,6 +107,13 @@ export class EventsModel extends Model<EventsModel> {
     allowNull: false,
   })
   contact: string;
+
+  @Field(() => String)
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  address: string;
 
   @Field(() => Date)
   @Column({

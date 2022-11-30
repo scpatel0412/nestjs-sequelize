@@ -24,6 +24,11 @@ export class UpdateEventInput {
   city: string;
 
   @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  address: string;
+
+  @IsNotEmpty()
   @IsBoolean()
   @Field(() => Boolean)
   status: boolean;

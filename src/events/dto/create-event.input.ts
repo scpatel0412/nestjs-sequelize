@@ -45,6 +45,11 @@ export class CreateEventInput {
 
   @IsNotEmpty()
   @IsString()
+  @Field(() => String)
+  address: string;
+
+  @IsNotEmpty()
+  @IsString()
   @IsDateString()
   @Field(() => Date)
   event_date: Date;
