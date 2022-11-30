@@ -28,6 +28,8 @@ export class EventsService {
     eventInput.event_time = events.event_time;
     eventInput.event_date = events.event_date;
     eventInput.userId = events.userId;
+    eventInput.contact = events.contact;
+    eventInput.address = events.address;
 
     const eventsResults = await this.eventsModel.create(eventInput.dataValues);
     return eventsResults;
@@ -50,6 +52,8 @@ export class EventsService {
       eventInput.state = events.state;
       eventInput.event_time = events.event_time;
       eventInput.event_date = events.event_date;
+      eventInput.contact = events.contact;
+      eventInput.address = events.address;
 
       await this.eventsModel.update(eventInput.dataValues, { where: { id } });
       return eventInput;
