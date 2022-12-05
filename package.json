@@ -28,7 +28,8 @@
     "seed:undo:all": "sequelize db:seed:undo:all",
     "seed:undo": "sequelize db:seed:undo",
     "seed:create": "sequelize seed:create",
-    "migration:generate": "npx sequelize-cli migration:generate --name"
+    "migration:generate": "npx sequelize-cli migration:generate --name",
+    "seed:generate": "sequelize seed:generate --name"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
