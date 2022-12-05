@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.createTable('events', {
+    return queryInterface.createTable('user_roles', {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -11,44 +11,15 @@ module.exports = {
         unique: true,
         primaryKey: true,
       },
-      image: {
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      value_info: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      country: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      state: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      contact: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      event_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      event_time: {
-        type: Sequelize.TIME,
-        allowNull: false,
-      },
-      address: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -61,13 +32,6 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
-      user_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
     });
     /**
      * Add altering commands here.
@@ -78,7 +42,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('events');
+    return queryInterface.dropTable('user_roles');
     /**
      * Add reverting commands here.
      *

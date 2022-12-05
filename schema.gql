@@ -98,6 +98,18 @@ type CelestialPostCount {
   count: Int!
 }
 
+type UserRoleCount {
+  count: Int!
+}
+
+type UserRoles {
+  id: String!
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
@@ -111,6 +123,9 @@ type Query {
   getComments: [PostComment!]!
   getEvents: [Events!]!
   getEvent(id: String!): Events!
+  getUserRole(id: String!): UserRoles!
+  getUserRoles: [UserRoles!]!
+  countUserRoles: UserRoleCount!
 }
 
 type Mutation {
@@ -132,6 +147,9 @@ type Mutation {
   updateEvent(id: String!, updateEventInput: UpdateEventInput!): Events!
   deleteEvent(id: String!): Events!
   enrollEvents(createUsersEventInput: CreateUsersEventsInput!): UsersEvents!
+  createUserRoles(createUserRoleInput: CreateUserRoleInput!): UserRoles!
+  updateUserRoles(id: String!, updateUserRoleInput: UpdateUserRoleInput!): UserRoles!
+  deleteUserRoles(id: String!): UserRoles!
 }
 
 input CreateUserInput {
@@ -230,4 +248,18 @@ input CreateUsersEventsInput {
   userId: String!
   eventId: String!
   is_active: Boolean!
+}
+
+input CreateUserRoleInput {
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
+}
+
+input UpdateUserRoleInput {
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
 }
