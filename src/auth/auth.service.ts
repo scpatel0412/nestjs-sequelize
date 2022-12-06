@@ -15,8 +15,19 @@ export class AuthService {
     return this.jwtService.decode(token);
   }
 
-  async validateAccessToken(token): Promise<any> {
-    return localStorage.getItem('token') === token;
+  async validateAccessToken(token: any): Promise<boolean> {
+    const validate = this.jwtService.verify(token);
+    if (typeof validate === 'object') {
+      if (Object.keys(validate).length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (typeof validate === 'undefined') {
+      return false;
+    } else {
+      return false;
+    }
   }
 
   async deleteAccessToken(): Promise<any> {
@@ -27,8 +38,18 @@ export class AuthService {
     return (token || ' ').split(' ')[1];
   }
 
-  async validateRestoreToken(token: any): Promise<any> {
-    const payload = this.jwtService.decode(token);
-    return payload;
+  async validateRestoreToken(token: any): Promise<boolean> {
+    const validate = this.jwtService.verify(token);
+    if (typeof validate === 'object') {
+      if (Object.keys(validate).length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (typeof validate === 'undefined') {
+      return false;
+    } else {
+      return false;
+    }
   }
 }

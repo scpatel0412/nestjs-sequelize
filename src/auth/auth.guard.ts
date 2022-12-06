@@ -43,12 +43,13 @@ export class AuthGuard extends PassportAuthGuard('jwt') {
       const token = (
         this.getRequest(context).header('authorization') || ''
       ).replace('Bearer ', '');
-
       try {
         await super.canActivate(context);
-        canActivate = allowRestore
-          ? await this.authService.validateRestoreToken(token)
-          : await this.authService.validateAccessToken(token);
+        if (token) {
+          canActivate = await this.authService.validateAccessToken(token);
+        } else {
+          canActivate = false;
+        }
       } catch (e) {
         canActivate = false;
       }

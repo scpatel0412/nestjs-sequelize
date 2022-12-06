@@ -6,6 +6,7 @@ import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decora
 import { UserAuthModel } from './model/user-auth.model';
 import { UserCountModel } from './model/user-count.model';
 import { UserResetPasswordModel } from './model/user-reset-password.model';
+import { GqlAuthId } from 'src/auth/decorators/gql-auth-id.decorator';
 
 @Resolver(() => UserModel)
 export class UserResolver {
@@ -54,6 +55,12 @@ export class UserResolver {
   @Query(() => UserCountModel)
   userCount() {
     return this.userService.userCount();
+  }
+
+  @Query(() => UserModel)
+  profileDetails(@GqlAuthId() id: string) {
+    console.log('id', id);
+    return this.userService.profileDetails(id);
   }
 
   @AllowUnauthorized()

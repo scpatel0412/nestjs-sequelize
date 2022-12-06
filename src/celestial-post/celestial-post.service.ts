@@ -29,7 +29,6 @@ export class CelestialPostService {
     const postResults = await this.celestialPostModel.create(
       postInput.dataValues,
     );
-    console.log(postResults);
     return postInput;
   }
 
