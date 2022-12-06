@@ -31,7 +31,6 @@ export class UserService {
     if (findUser) {
       throw new ConflictException(`${emailCheck} already exists`);
     } else {
-      console.log(user);
       const user1 = new UserModel();
       user1.email = this.normalizeEmail(user.email);
       user1.firstname = user.firstname;
@@ -103,7 +102,6 @@ export class UserService {
     const user = await this.userModel.findOne({
       where: { email, password: pass },
     });
-    console.log('user', user);
     if (!user) {
       throw new NotFoundException(`${email} not found`);
     } else {
@@ -148,6 +146,11 @@ export class UserService {
       message.change = true;
       return message;
     }
+  }
+
+  public async profileDetails(id: string): Promise<UserModel> {
+    const userDetails = await this.userModel.findOne({ where: { id } });
+    return userDetails;
   }
 
   private hashPassword(pwd: string): string {
