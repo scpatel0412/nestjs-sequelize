@@ -18,7 +18,7 @@ export class PostLikeService {
     postInput.status = post.status;
     postInput.description = post.description;
     postInput.postId = post.postId;
-    postInput.email = post.email;
+    postInput.userId = post.userId;
 
     const postResults = await this.postLikeModel.create(postInput.dataValues);
     return postResults;
@@ -26,14 +26,14 @@ export class PostLikeService {
 
   public async getLikes(): Promise<Array<PostLikeModel>> {
     const userLike = await this.postLikeModel
-      .scope([{ method: ['posts'] }])
+      .scope([{ method: ['posts'] }, { method: ['users'] }])
       .findAll();
     return userLike;
   }
 
   public async getLike(id: string): Promise<PostLikeModel> {
     const userLike = await this.postLikeModel
-      .scope([{ method: ['posts'] }])
+      .scope([{ method: ['posts'] }, { method: ['users'] }])
       .findOne({ where: { id } });
     return userLike;
   }
@@ -49,7 +49,6 @@ export class PostLikeService {
       likeInput.likes = post.likes;
       likeInput.status = post.status;
       likeInput.description = post.description;
-      likeInput.email = post.email;
 
       const a = await this.postLikeModel.update(likeInput.dataValues, {
         where: { id },

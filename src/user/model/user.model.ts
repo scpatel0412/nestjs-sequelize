@@ -15,6 +15,8 @@ import {
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
 import { EventsModel } from 'src/events/model/events.model';
 import { UsersEventsModel } from 'src/events/model/users-events.model';
+import { PostCommentModel } from 'src/post-comment/model/post-comment.model';
+import { PostLikeModel } from 'src/post-like/model/post-like.model';
 import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
 
 @Scopes({
@@ -56,6 +58,50 @@ import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
       include: {
         model: UserRolesModel,
         as: 'usersRole',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  user_likes: () => {
+    return {
+      include: {
+        model: PostLikeModel,
+        as: 'user_likes',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  user_comments: () => {
+    return {
+      include: {
+        model: PostCommentModel,
+        as: 'user_comments',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  users_posts_likes: () => {
+    return {
+      include: {
+        model: CelestialPostModel,
+        as: 'users_posts_likes',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  users_posts_comments: () => {
+    return {
+      include: {
+        model: CelestialPostModel,
+        as: 'users_posts_comments',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -172,4 +218,20 @@ export class UserModel extends Model<UserModel> {
   @Field(() => [EventsModel], { nullable: true })
   @BelongsToMany(() => EventsModel, () => UsersEventsModel)
   events_enroll: EventsModel[];
+
+  @Field(() => [PostLikeModel], { nullable: true })
+  @HasMany(() => PostLikeModel)
+  user_likes: PostLikeModel[];
+
+  @Field(() => [CelestialPostModel], { nullable: true })
+  @BelongsToMany(() => CelestialPostModel, () => PostLikeModel)
+  users_posts_likes: CelestialPostModel[];
+
+  @Field(() => [PostCommentModel], { nullable: true })
+  @HasMany(() => PostCommentModel)
+  user_comments: PostCommentModel[];
+
+  @Field(() => [CelestialPostModel], { nullable: true })
+  @BelongsToMany(() => CelestialPostModel, () => PostCommentModel)
+  users_posts_comments: CelestialPostModel[];
 }

@@ -19,7 +19,7 @@ export class PostCommentService {
     const commentInput = new PostCommentModel();
     commentInput.description = comment.description;
     commentInput.comment = comment.comment;
-    commentInput.email = comment.email;
+    commentInput.userId = comment.userId;
     commentInput.status = comment.status;
     commentInput.postId = comment.postId;
     const commentResult = await this.postCommentModel.create(
@@ -38,7 +38,6 @@ export class PostCommentService {
     } else {
       commentInput.description = comment.description;
       commentInput.comment = comment.comment;
-      commentInput.email = comment.email;
       commentInput.status = comment.status;
       await this.postCommentModel.update(commentInput.dataValues, {
         where: { id },
@@ -58,12 +57,16 @@ export class PostCommentService {
   }
 
   public async getComment(id: string): Promise<PostCommentModel> {
-    const commentInput = await this.postCommentModel.findOne({ where: { id } });
+    const commentInput = await this.postCommentModel
+      .scope([{ method: ['posts'] }, { method: ['users'] }])
+      .findOne({ where: { id } });
     return commentInput;
   }
 
   public async getComments(): Promise<Array<PostCommentModel>> {
-    const commentInput = await this.postCommentModel.findAll();
+    const commentInput = await this.postCommentModel
+      .scope([{ method: ['posts'] }, { method: ['users'] }])
+      .findAll();
     return commentInput;
   }
 }

@@ -65,6 +65,10 @@ export class UserService {
         { method: ['event_created'] },
         { method: ['events_enroll'] },
         { method: ['usersRole'] },
+        { method: ['user_likes'] },
+        { method: ['users_posts_likes'] },
+        { method: ['user_comments'] },
+        { method: ['users_posts_comments'] },
       ])
       .findAll();
     return user;
@@ -77,6 +81,10 @@ export class UserService {
         { method: ['event_created'] },
         { method: ['events_enroll'] },
         { method: ['usersRole'] },
+        { method: ['user_likes'] },
+        { method: ['users_posts_likes'] },
+        { method: ['user_comments'] },
+        { method: ['users_posts_comments'] },
       ])
       .findOne({ where: { id } });
     return user;

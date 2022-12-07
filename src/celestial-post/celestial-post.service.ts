@@ -34,14 +34,26 @@ export class CelestialPostService {
 
   public async getPosts(): Promise<Array<CelestialPostModel>> {
     const postsResults = await this.celestialPostModel
-      .scope([{ method: ['users'] }, { method: ['likes'] }])
+      .scope([
+        { method: ['users'] },
+        { method: ['likes'] },
+        { method: ['comments'] },
+        { method: ['post_users_likes'] },
+        { method: ['posts_users_comments'] },
+      ])
       .findAll();
     return postsResults;
   }
 
   public async getPost(id: string): Promise<CelestialPostModel> {
     const postsResults = await this.celestialPostModel
-      .scope([{ method: ['users'] }, { method: ['likes'] }])
+      .scope([
+        { method: ['users'] },
+        { method: ['likes'] },
+        { method: ['comments'] },
+        { method: ['post_users_likes'] },
+        { method: ['posts_users_comments'] },
+      ])
       .findOne({ where: { id } });
     return postsResults;
   }

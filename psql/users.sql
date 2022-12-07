@@ -10,3 +10,9 @@ create table users_events(id uuid default uuid_generate_v4(),created_at date,upd
 create table user_roles(id uuid default uuid_generate_v4(),name varchar not null,value_info varchar not null,description varchar not null,status boolean,created_at date,updated_at date,PRIMARY KEY(id) );
 alter table users ADD COLUMN user_role_id uuid;
 alter table users ADD CONSTRAINT fk_user_role FOREIGN KEY(user_role_id) REFERENCES user_roles(id);
+alter table post_comments drop column email;
+alter table post_comments add column user_id uuid;
+alter table post_comments ADD CONSTRAINT fk_post_comment_user FOREIGN KEY(user_id) REFERENCES users(id);
+alter table post_likes drop column email;
+alter table post_likes add column user_id uuid;
+alter table post_likes ADD CONSTRAINT fk_post_like_user FOREIGN KEY(user_id) REFERENCES users(id);

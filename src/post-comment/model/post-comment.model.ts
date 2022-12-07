@@ -11,6 +11,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
+import { UserModel } from 'src/user/model/user.model';
 
 @Scopes({
   posts: () => {
@@ -18,6 +19,17 @@ import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.mode
       include: {
         model: CelestialPostModel,
         as: 'posts',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  users: () => {
+    return {
+      include: {
+        model: UserModel,
+        as: 'users',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -37,13 +49,6 @@ export class PostCommentModel extends Model<PostCommentModel> {
     allowNull: false,
   })
   id: string;
-
-  @Field(() => String)
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  email: string;
 
   @Field(() => String)
   @Column({
@@ -79,4 +84,12 @@ export class PostCommentModel extends Model<PostCommentModel> {
   @Field(() => CelestialPostModel)
   @BelongsTo(() => CelestialPostModel)
   posts: CelestialPostModel;
+
+  @ForeignKey(() => UserModel)
+  @Column({ field: 'user_id' })
+  userId: string;
+
+  @Field(() => UserModel)
+  @BelongsTo(() => UserModel)
+  users: UserModel;
 }
