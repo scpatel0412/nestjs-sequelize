@@ -3,11 +3,27 @@ import {
   Column,
   CreatedAt,
   DataType,
+  HasMany,
   Model,
+  Scopes,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { UserModel } from 'src/user/model/user.model';
 
+@Scopes({
+  users: () => {
+    return {
+      include: {
+        model: UserModel,
+        as: 'users',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+})
 @ObjectType('UserRoles')
 @Table({ modelName: 'user_roles' })
 export class UserRolesModel extends Model<UserRolesModel> {
@@ -54,4 +70,8 @@ export class UserRolesModel extends Model<UserRolesModel> {
 
   @UpdatedAt
   updated_at: Date;
+
+  @Field(() => [UserModel], { nullable: true })
+  @HasMany(() => UserModel)
+  users: UserModel[];
 }

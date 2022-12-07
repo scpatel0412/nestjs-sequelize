@@ -62,6 +62,13 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
+      user_role_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'user_roles',
+          key: 'id',
+        },
+      },
     });
     /**
      * Add altering commands here.

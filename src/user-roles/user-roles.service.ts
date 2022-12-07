@@ -55,12 +55,16 @@ export class UserRolesService {
   }
 
   public async getUserRole(id: string): Promise<UserRolesModel> {
-    const roleInput = await this.userRolesModel.findOne({ where: { id } });
+    const roleInput = await this.userRolesModel
+      .scope([{ method: ['users'] }])
+      .findOne({ where: { id } });
     return roleInput;
   }
 
   public async getUserRoles(): Promise<Array<UserRolesModel>> {
-    const roleInput = await this.userRolesModel.findAll();
+    const roleInput = await this.userRolesModel
+      .scope([{ method: ['users'] }])
+      .findAll();
     return roleInput;
   }
 

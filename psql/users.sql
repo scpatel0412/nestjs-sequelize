@@ -8,3 +8,5 @@ create table post_comments(id uuid default uuid_generate_v4(),email varchar not 
 create table events(id uuid default uuid_generate_v4(),address varchar not null,image varchar not null,description varchar not null,title varchar not null,city varchar not null,status boolean,country varchar not null,state varchar not null,contact varchar not null,event_date date,event_time time,created_at date,updated_at date,user_id uuid,PRIMARY KEY(id),CONSTRAINT fk_events FOREIGN KEY(user_id) REFERENCES users(id));
 create table users_events(id uuid default uuid_generate_v4(),created_at date,updated_at date,is_active boolean,user_id uuid,event_id uuid,PRIMARY KEY(id),CONSTRAINT fk_events_user FOREIGN KEY(user_id) REFERENCES users(id),CONSTRAINT fk_events_event FOREIGN KEY(event_id) REFERENCES events(id));
 create table user_roles(id uuid default uuid_generate_v4(),name varchar not null,value_info varchar not null,description varchar not null,status boolean,created_at date,updated_at date,PRIMARY KEY(id) );
+alter table users ADD COLUMN user_role_id uuid;
+alter table users ADD CONSTRAINT fk_user_role FOREIGN KEY(user_role_id) REFERENCES user_roles(id);

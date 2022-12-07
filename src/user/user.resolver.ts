@@ -47,8 +47,12 @@ export class UserResolver {
 
   @AllowUnauthorized()
   @Mutation(() => UserAuthModel)
-  signIn(@Args('email') email: string, @Args('password') password: string) {
-    return this.userService.signIn(email, password);
+  signIn(
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('role') role: string,
+  ) {
+    return this.userService.signIn(email, password, role);
   }
 
   @AllowUnauthorized()
