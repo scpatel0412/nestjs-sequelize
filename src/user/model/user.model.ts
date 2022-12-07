@@ -1,9 +1,11 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   CreatedAt,
   DataType,
+  ForeignKey,
   HasMany,
   Model,
   Scopes,
@@ -13,6 +15,7 @@ import {
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
 import { EventsModel } from 'src/events/model/events.model';
 import { UsersEventsModel } from 'src/events/model/users-events.model';
+import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
 
 @Scopes({
   celestialPosts: () => {
@@ -42,6 +45,17 @@ import { UsersEventsModel } from 'src/events/model/users-events.model';
       include: {
         model: EventsModel,
         as: 'events_enroll',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  usersRole: () => {
+    return {
+      include: {
+        model: UserRolesModel,
+        as: 'usersRole',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -138,6 +152,14 @@ export class UserModel extends Model<UserModel> {
 
   @UpdatedAt
   updated_at: Date;
+
+  @ForeignKey(() => UserRolesModel)
+  @Column({ field: 'user_role_id' })
+  userRoleId: string;
+
+  @Field(() => UserRolesModel, { nullable: true })
+  @BelongsTo(() => UserRolesModel)
+  usersRole: UserRolesModel;
 
   @Field(() => [CelestialPostModel], { nullable: true })
   @HasMany(() => CelestialPostModel)

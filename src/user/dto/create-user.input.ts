@@ -57,7 +57,13 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
+  @IsNotEmpty()
   @IsBoolean()
   @Field(() => Boolean)
   status: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  userRoleId: string;
 }

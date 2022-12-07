@@ -13,11 +13,13 @@ import { UserAuthModel } from './model/user-auth.model';
 import { UserCountModel } from './model/user-count.model';
 import { UserResetPasswordModel } from './model/user-reset-password.model';
 import { ConfigService } from '@nestjs/config';
+import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(UserModel) private userModel: typeof UserModel,
+    @InjectModel(UserRolesModel) private userRolesModel: typeof UserRolesModel,
     private authService: AuthService,
     private sequelize: Sequelize,
     private readonly configService: ConfigService,
@@ -31,20 +33,28 @@ export class UserService {
     if (findUser) {
       throw new ConflictException(`${emailCheck} already exists`);
     } else {
-      const user1 = new UserModel();
-      user1.email = this.normalizeEmail(user.email);
-      user1.firstname = user.firstname;
-      user1.lastname = user.lastname;
-      user1.username = user.username;
-      user1.password = this.hashPassword(user.password);
-      user1.state = user.state;
-      user1.status = user.status;
-      user1.city = user.city;
-      user1.country = user.country;
-      user1.address1 = user.address1;
-      user1.address2 = user.address2;
-      const userContent = await this.userModel.create(user1.dataValues);
-      return userContent;
+      const userRoleExists = await this.userRolesModel.findOne({
+        where: { value_info: user.userRoleId },
+      });
+      if (!userRoleExists) {
+        throw new NotFoundException(`${user.userRoleId} role doesnot exists`);
+      } else {
+        const user1 = new UserModel();
+        user1.email = this.normalizeEmail(user.email);
+        user1.firstname = user.firstname;
+        user1.lastname = user.lastname;
+        user1.username = user.username;
+        user1.password = this.hashPassword(user.password);
+        user1.state = user.state;
+        user1.status = user.status;
+        user1.city = user.city;
+        user1.country = user.country;
+        user1.address1 = user.address1;
+        user1.address2 = user.address2;
+        user1.userRoleId = userRoleExists.dataValues.id;
+        const userContent = await this.userModel.create(user1.dataValues);
+        return userContent;
+      }
     }
   }
 
@@ -54,6 +64,7 @@ export class UserService {
         { method: ['celestialPosts'] },
         { method: ['event_created'] },
         { method: ['events_enroll'] },
+        { method: ['usersRole'] },
       ])
       .findAll();
     return user;
@@ -65,6 +76,7 @@ export class UserService {
         { method: ['celestialPosts'] },
         { method: ['event_created'] },
         { method: ['events_enroll'] },
+        { method: ['usersRole'] },
       ])
       .findOne({ where: { id } });
     return user;
@@ -90,26 +102,40 @@ export class UserService {
       userInput.address1 = user.address1;
       userInput.address2 = user.address2;
 
-      const a = await this.userModel.update(userInput.dataValues, {
+      await this.userModel.update(userInput.dataValues, {
         where: { id },
       });
       return userInput;
     }
   }
 
-  public async signIn(email: string, password: string): Promise<UserAuthModel> {
+  public async signIn(
+    email: string,
+    password: string,
+    role: string,
+  ): Promise<UserAuthModel> {
     const pass = this.hashPassword(password);
-    const user = await this.userModel.findOne({
-      where: { email, password: pass },
-    });
+    const user = await this.userModel
+      .scope([{ method: ['usersRole'] }])
+      .findOne({
+        where: { email, password: pass },
+      });
+    console.log('email', user);
     if (!user) {
       throw new NotFoundException(`${email} not found`);
     } else {
-      const token = await this.authService.createAccessToken({
-        sub: user.id,
-        email: user.email,
+      const userRoleCheck = await this.userRolesModel.findOne({
+        where: { value_info: role },
       });
-      return { user, token };
+      if (userRoleCheck.dataValues.id !== user.dataValues.userRoleId) {
+        throw new ConflictException('Role provided doesnt match !!!!!');
+      } else {
+        const token = await this.authService.createAccessToken({
+          sub: user.id,
+          email: user.email,
+        });
+        return { user, token };
+      }
     }
   }
 
