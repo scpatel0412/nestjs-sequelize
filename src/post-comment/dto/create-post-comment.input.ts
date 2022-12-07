@@ -6,11 +6,6 @@ export class CreatePostCommentInput {
   @IsNotEmpty()
   @IsString()
   @Field(() => String)
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Field(() => String)
   description: string;
 
   @IsNotEmpty()
@@ -27,4 +22,9 @@ export class CreatePostCommentInput {
   @IsString()
   @Field(() => String)
   postId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  userId: string;
 }

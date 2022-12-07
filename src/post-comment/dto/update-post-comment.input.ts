@@ -6,11 +6,6 @@ export class UpdatePostCommentInput {
   @IsNotEmpty()
   @IsString()
   @Field(() => String)
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Field(() => String)
   description: string;
 
   @IsNotEmpty()

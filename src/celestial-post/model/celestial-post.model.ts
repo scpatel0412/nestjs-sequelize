@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -43,6 +44,28 @@ import { UserModel } from '../../user/model/user.model';
       include: {
         model: PostCommentModel,
         as: 'comments',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  post_users_likes: () => {
+    return {
+      include: {
+        model: UserModel,
+        as: 'post_users_likes',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  posts_users_comments: () => {
+    return {
+      include: {
+        model: UserModel,
+        as: 'posts_users_comments',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -126,4 +149,12 @@ export class CelestialPostModel extends Model<CelestialPostModel> {
   @Field(() => [PostCommentModel], { nullable: true })
   @HasMany(() => PostCommentModel)
   comments: PostCommentModel[];
+
+  @Field(() => [UserModel], { nullable: true })
+  @BelongsToMany(() => UserModel, () => PostLikeModel)
+  post_users_likes: UserModel[];
+
+  @Field(() => [UserModel], { nullable: true })
+  @BelongsToMany(() => UserModel, () => PostCommentModel)
+  posts_users_comments: UserModel[];
 }

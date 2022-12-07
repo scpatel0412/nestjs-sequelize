@@ -6,11 +6,6 @@ export class UpdatePostLikeInput {
   @IsNotEmpty()
   @IsString()
   @Field(() => String)
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Field(() => String)
   description: string;
 
   @IsNotEmpty()

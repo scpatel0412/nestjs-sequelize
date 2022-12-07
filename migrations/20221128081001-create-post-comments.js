@@ -11,10 +11,6 @@ module.exports = {
         unique: true,
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       description: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -36,6 +32,13 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: 'celestial_posts',
+          key: 'id',
+        },
+      },
+      user_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'users',
           key: 'id',
         },
       },

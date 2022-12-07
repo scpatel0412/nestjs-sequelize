@@ -4,20 +4,20 @@
 
 type PostComment {
   id: String!
-  email: String!
   description: String!
   comment: String!
   status: Boolean!
   posts: CelestialPost!
+  users: User!
 }
 
 type PostLike {
   id: String!
-  email: String!
   description: String!
   likes: Boolean!
   status: Boolean!
   posts: CelestialPost!
+  users: User!
 }
 
 type CelestialPost {
@@ -31,6 +31,8 @@ type CelestialPost {
   users: User!
   likes: [PostLike!]
   comments: [PostComment!]
+  post_users_likes: [User!]
+  posts_users_comments: [User!]
 }
 
 type UsersEvents {
@@ -88,6 +90,10 @@ type User {
   celestialPosts: [CelestialPost!]
   event_created: [Events!]
   events_enroll: [Events!]
+  user_likes: [PostLike!]
+  users_posts_likes: [CelestialPost!]
+  user_comments: [PostComment!]
+  users_posts_comments: [CelestialPost!]
 }
 
 type UserCount {
@@ -190,30 +196,28 @@ input UpdateCelestialPostInput {
 }
 
 input CreatePostLikeInput {
-  email: String!
   description: String!
   likes: Boolean!
   status: Boolean!
   postId: String!
+  userId: String!
 }
 
 input UpdatePostLikeInput {
-  email: String!
   description: String!
   likes: Boolean!
   status: Boolean!
 }
 
 input CreatePostCommentInput {
-  email: String!
   description: String!
   comment: String!
   status: Boolean!
   postId: String!
+  userId: String!
 }
 
 input UpdatePostCommentInput {
-  email: String!
   description: String!
   comment: String!
   status: Boolean!
