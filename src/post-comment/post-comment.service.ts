@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { CreatePostCommentInput } from './dto/create-post-comment.input';
 import { UpdatePostCommentInput } from './dto/update-post-comment.input';
+import { PostCommentCountModel } from './model/post-comment-count.model';
 import { PostCommentModel } from './model/post-comment.model';
 
 @Injectable()
@@ -68,5 +69,53 @@ export class PostCommentService {
       .scope([{ method: ['posts'] }, { method: ['users'] }])
       .findAll();
     return commentInput;
+  }
+
+  public async getUserComments(
+    userId: string,
+  ): Promise<Array<PostCommentModel>> {
+    const likeDetails = await this.postCommentModel
+      .scope([{ method: ['users'] }, { method: ['posts'] }])
+      .findAll({
+        where: { userId },
+      });
+    if (!likeDetails) {
+      throw new NotFoundException(`No data found with this id ${userId}`);
+    } else {
+      return likeDetails;
+    }
+  }
+
+  public async getPostComments(
+    postId: string,
+  ): Promise<Array<PostCommentModel>> {
+    const likeDetails = await this.postCommentModel
+      .scope([{ method: ['users'] }, { method: ['posts'] }])
+      .findAll({
+        where: { postId },
+      });
+    if (!likeDetails) {
+      throw new NotFoundException(`No data found with this id ${postId}`);
+    } else {
+      return likeDetails;
+    }
+  }
+
+  public async getUserCommentsCount(
+    userId: string,
+  ): Promise<PostCommentCountModel> {
+    const counts = await this.postCommentModel.count({ where: { userId } });
+    const likeCount = new PostCommentCountModel();
+    likeCount.count = counts;
+    return likeCount;
+  }
+
+  public async getPostCommentsCount(
+    postId: string,
+  ): Promise<PostCommentCountModel> {
+    const counts = await this.postCommentModel.count({ where: { postId } });
+    const likeCount = new PostCommentCountModel();
+    likeCount.count = counts;
+    return likeCount;
   }
 }
