@@ -29,7 +29,7 @@ export class CelestialPostService {
     const postResults = await this.celestialPostModel.create(
       postInput.dataValues,
     );
-    return postInput;
+    return postResults;
   }
 
   public async getPosts(): Promise<Array<CelestialPostModel>> {

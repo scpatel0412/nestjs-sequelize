@@ -81,7 +81,6 @@
     "@types/node": "^16.0.0",
     "@types/passport-jwt": "^3.0.7",
     "@types/sequelize": "^4.28.14",
-    "@types/stripe": "^8.0.417",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

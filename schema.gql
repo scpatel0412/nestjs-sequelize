@@ -114,6 +114,14 @@ type CelestialPostCount {
   count: Int!
 }
 
+type PostLikeCount {
+  count: Int!
+}
+
+type PostCommentCount {
+  count: Int!
+}
+
 type UserRoleCount {
   count: Int!
 }
@@ -128,8 +136,16 @@ type Query {
   postCount: CelestialPostCount!
   getLikes: [PostLike!]!
   getLike(id: String!): PostLike!
+  getUserLikes: [PostLike!]!
+  getPostLikes(postId: String!): [PostLike!]!
+  getUserLikesCount: PostLikeCount!
+  getPostLikesCount(postId: String!): PostLikeCount!
   getComment(id: String!): PostComment!
   getComments: [PostComment!]!
+  getUserComments: [PostComment!]!
+  getPostComments(postId: String!): [PostComment!]!
+  getUserCommentsCount: PostCommentCount!
+  getPostCommentsCount(postId: String!): PostCommentCount!
   getEvents: [Events!]!
   getEvent(id: String!): Events!
   getUserRole(id: String!): UserRoles!

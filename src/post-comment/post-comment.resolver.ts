@@ -1,10 +1,11 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { PostCommentService } from './post-comment.service';
-import { PostComment } from './entities/post-comment.entity';
 import { CreatePostCommentInput } from './dto/create-post-comment.input';
 import { UpdatePostCommentInput } from './dto/update-post-comment.input';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 import { PostCommentModel } from './model/post-comment.model';
+import { GqlAuthId } from 'src/auth/decorators/gql-auth-id.decorator';
+import { PostCommentCountModel } from './model/post-comment-count.model';
 
 @Resolver(() => PostCommentModel)
 export class PostCommentResolver {
@@ -45,5 +46,27 @@ export class PostCommentResolver {
   @Query(() => [PostCommentModel])
   getComments() {
     return this.postCommentService.getComments();
+  }
+
+  @Query(() => [PostCommentModel])
+  getUserComments(@GqlAuthId() userId: string) {
+    return this.postCommentService.getUserComments(userId);
+  }
+
+  @AllowUnauthorized()
+  @Query(() => [PostCommentModel])
+  getPostComments(@Args('postId') postId: string) {
+    return this.postCommentService.getPostComments(postId);
+  }
+
+  @Query(() => PostCommentCountModel)
+  getUserCommentsCount(@GqlAuthId() userId: string) {
+    return this.postCommentService.getUserCommentsCount(userId);
+  }
+
+  @AllowUnauthorized()
+  @Query(() => PostCommentCountModel)
+  getPostCommentsCount(@Args('postId') postId: string) {
+    return this.postCommentService.getPostCommentsCount(postId);
   }
 }
