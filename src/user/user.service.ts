@@ -128,7 +128,6 @@ export class UserService {
       .findOne({
         where: { email, password: pass },
       });
-    console.log('email', user);
     if (!user) {
       throw new NotFoundException(`${email} not found`);
     } else {

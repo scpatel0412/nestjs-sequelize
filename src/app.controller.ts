@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
+import { Response, Request } from 'express';
+import { join } from 'path';
 import { AppService } from './app.service';
+import { AllowUnauthorized } from './auth/decorators/allow-unauthorized.decorator';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @AllowUnauthorized()
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  root(@Res() res: Response) {
+    return res.sendFile(join(__dirname, '../../', 'src/index.html'));
   }
 }
