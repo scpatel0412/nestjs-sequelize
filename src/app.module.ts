@@ -13,6 +13,8 @@ import * as Validation from '@hapi/joi';
 import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { UserRolesModule } from './user-roles/user-roles.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 @Module({
   imports: [
     ConfigModule.forRoot({
