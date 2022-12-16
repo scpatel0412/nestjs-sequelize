@@ -126,6 +126,18 @@ type UserRoleCount {
   count: Int!
 }
 
+type EventTypes {
+  id: String!
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
+}
+
+type EventTypesCount {
+  count: Int!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
@@ -151,6 +163,9 @@ type Query {
   getUserRole(id: String!): UserRoles!
   getUserRoles: [UserRoles!]!
   countUserRoles: UserRoleCount!
+  getEventType(id: String!): EventTypes!
+  getEventTypes: [EventTypes!]!
+  countEventTypes: EventTypesCount!
 }
 
 type Mutation {
@@ -175,6 +190,9 @@ type Mutation {
   createUserRoles(createUserRoleInput: CreateUserRoleInput!): UserRoles!
   updateUserRoles(id: String!, updateUserRoleInput: UpdateUserRoleInput!): UserRoles!
   deleteUserRoles(id: String!): UserRoles!
+  createEventTypes(createEventTypeInput: CreateEventTypeInput!): EventTypes!
+  updateEventTypes(id: String!, updateEventTypeInput: UpdateEventTypeInput!): EventTypes!
+  deleteEventTypes(id: String!): EventTypes!
 }
 
 input CreateUserInput {
@@ -285,5 +303,19 @@ input UpdateUserRoleInput {
   name: String!
   value_info: String!
   description: String!
+  status: Boolean!
+}
+
+input CreateEventTypeInput {
+  name: String!
+  description: String!
+  value_info: String!
+  status: Boolean!
+}
+
+input UpdateEventTypeInput {
+  name: String!
+  description: String!
+  value_info: String!
   status: Boolean!
 }

@@ -16,3 +16,4 @@ alter table post_comments ADD CONSTRAINT fk_post_comment_user FOREIGN KEY(user_i
 alter table post_likes drop column email;
 alter table post_likes add column user_id uuid;
 alter table post_likes ADD CONSTRAINT fk_post_like_user FOREIGN KEY(user_id) REFERENCES users(id);
+create table event_types(id uuid default uuid_generate_v4(),name varchar not null,value_info varchar not null,description varchar not null,status boolean,created_at date,updated_at date,PRIMARY KEY(id) );
