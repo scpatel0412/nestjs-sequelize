@@ -14,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { UserRolesModule } from './user-roles/user-roles.module';
 import { EventTypesModule } from './event-types/event-types.module';
+import { EventSubTypesModule } from './event-sub-types/event-sub-types.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -62,6 +63,7 @@ import { EventTypesModule } from './event-types/event-types.module';
     EventsModule,
     UserRolesModule,
     EventTypesModule,
+    EventSubTypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

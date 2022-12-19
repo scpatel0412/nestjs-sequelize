@@ -30,7 +30,7 @@ module.exports = {
       },
       {
         name: 'Miscellaneous Events',
-        value_info: 'miscellaneous_event',
+        value_info: 'miscellaneous_events',
         description: 'Miscellaneous Events',
         status: true,
         created_at: new Date(),
@@ -54,7 +54,7 @@ module.exports = {
         { value_info: 'social_events' },
         { value_info: 'corporate_events' },
         { value_info: 'live_events' },
-        { value_info: 'miscellaneous_event' },
+        { value_info: 'miscellaneous_events' },
       ],
     });
     /**

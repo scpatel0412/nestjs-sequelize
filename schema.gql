@@ -138,6 +138,22 @@ type EventTypesCount {
   count: Int!
 }
 
+type EventSubTypes {
+  id: String!
+  name: String!
+  image: String!
+  value_info: String!
+  description: String!
+  title: String!
+  meta_title: String!
+  meta_description: String!
+  status: Boolean!
+}
+
+type EventSubTypesCount {
+  count: Int!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
@@ -166,6 +182,9 @@ type Query {
   getEventType(id: String!): EventTypes!
   getEventTypes: [EventTypes!]!
   countEventTypes: EventTypesCount!
+  getEventSubType(id: String!): EventSubTypes!
+  getEventSubTypes: [EventSubTypes!]!
+  countEventSubTypes: EventSubTypesCount!
 }
 
 type Mutation {
@@ -193,6 +212,9 @@ type Mutation {
   createEventTypes(createEventTypeInput: CreateEventTypeInput!): EventTypes!
   updateEventTypes(id: String!, updateEventTypeInput: UpdateEventTypeInput!): EventTypes!
   deleteEventTypes(id: String!): EventTypes!
+  createEventSubTypes(createEventSubTypeInput: CreateEventSubTypeInput!): EventSubTypes!
+  updateEventSubTypes(id: String!, updateEventSubTypeInput: UpdateEventSubTypeInput!): EventSubTypes!
+  deleteEventSubTypes(id: String!): EventSubTypes!
 }
 
 input CreateUserInput {
@@ -317,5 +339,27 @@ input UpdateEventTypeInput {
   name: String!
   description: String!
   value_info: String!
+  status: Boolean!
+}
+
+input CreateEventSubTypeInput {
+  name: String!
+  value_info: String!
+  description: String!
+  title: String!
+  image: String!
+  meta_title: String!
+  meta_description: String!
+  status: Boolean!
+}
+
+input UpdateEventSubTypeInput {
+  name: String!
+  value_info: String!
+  description: String!
+  title: String!
+  image: String!
+  meta_title: String!
+  meta_description: String!
   status: Boolean!
 }
