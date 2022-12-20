@@ -1,13 +1,30 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
+  ForeignKey,
   Model,
+  Scopes,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { EventTypesModel } from 'src/event-types/model/event-types.model';
 
+@Scopes({
+  event_types: () => {
+    return {
+      include: {
+        model: EventTypesModel,
+        as: 'event_types',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+})
 @ObjectType('EventSubTypes')
 @Table({ modelName: 'event_sub_types' })
 export class EventSubTypesModel extends Model<EventSubTypesModel> {
@@ -82,4 +99,12 @@ export class EventSubTypesModel extends Model<EventSubTypesModel> {
 
   @UpdatedAt
   updated_at: Date;
+
+  @ForeignKey(() => EventTypesModel)
+  @Column({ field: 'event_types_id' })
+  eventTypesId: string;
+
+  @Field(() => EventTypesModel)
+  @BelongsTo(() => EventTypesModel)
+  event_types: EventTypesModel;
 }

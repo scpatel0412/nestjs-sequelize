@@ -48,6 +48,13 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
+      event_types_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'event_types',
+          key: 'id',
+        },
+      },
     });
     /**
      * Add altering commands here.

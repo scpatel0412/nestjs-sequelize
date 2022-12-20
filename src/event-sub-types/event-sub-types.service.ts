@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { EventSubTypesModel } from './model/event-sub-types.model';
 import { Sequelize } from 'sequelize-typescript';
 import { EventSubTypesCount } from './model/event-sub-types-count.model';
+import { EventTypesModel } from 'src/event-types/model/event-types.model';
 
 @Injectable()
 export class EventSubTypesService {
@@ -12,26 +13,38 @@ export class EventSubTypesService {
     @InjectModel(EventSubTypesModel)
     private eventSubTypesModel: typeof EventSubTypesModel,
     private sequelize: Sequelize,
+    @InjectModel(EventTypesModel)
+    private eventTypesModel: typeof EventTypesModel,
   ) {}
 
   public async createEventSubTypes(
     events: CreateEventSubTypeInput,
   ): Promise<EventSubTypesModel> {
-    const eventsModel = new EventSubTypesModel();
-    eventsModel.name = events.name;
-    eventsModel.value_info = events.value_info;
-    eventsModel.description = events.description;
-    eventsModel.title = events.title;
-    eventsModel.image = events.image;
-    eventsModel.meta_title = events.meta_title;
-    eventsModel.meta_description = events.meta_description;
-    eventsModel.status = events.status;
+    const event_types_data = await this.eventTypesModel.findOne({
+      where: { value_info: events.event_type_value },
+    });
+    if (!event_types_data) {
+      throw new NotFoundException(
+        `${events.event_type_value} event type doesnt exist`,
+      );
+    } else {
+      const eventsModel = new EventSubTypesModel();
+      eventsModel.name = events.name;
+      eventsModel.value_info = events.value_info;
+      eventsModel.description = events.description;
+      eventsModel.title = events.title;
+      eventsModel.image = events.image;
+      eventsModel.meta_title = events.meta_title;
+      eventsModel.meta_description = events.meta_description;
+      eventsModel.status = events.status;
+      eventsModel.eventTypesId = event_types_data.dataValues.id;
 
-    const eventResults = await this.eventSubTypesModel.create(
-      eventsModel.dataValues,
-    );
+      const eventResults = await this.eventSubTypesModel.create(
+        eventsModel.dataValues,
+      );
 
-    return eventResults;
+      return eventResults;
+    }
   }
 
   public async updateEventSubTypes(
@@ -77,19 +90,34 @@ export class EventSubTypesService {
   }
 
   public async getEventSubType(id: string): Promise<EventSubTypesModel> {
-    const eventsModel = await this.eventSubTypesModel.findOne({
-      where: { id },
-    });
+    const eventsModel = await this.eventSubTypesModel
+      .scope([{ method: ['event_types'] }])
+      .findOne({
+        where: { id },
+      });
     return eventsModel;
   }
 
   public async getEventSubTypes(): Promise<Array<EventSubTypesModel>> {
-    const eventsModel = await this.eventSubTypesModel.findAll();
+    const eventsModel = await this.eventSubTypesModel
+      .scope([{ method: ['event_types'] }])
+      .findAll();
     return eventsModel;
   }
 
   public async countEventSubTypes(): Promise<EventSubTypesCount> {
     const counts = await this.eventSubTypesModel.count();
+    const eventCount = new EventSubTypesCount();
+    eventCount.count = counts;
+    return eventCount;
+  }
+
+  public async countEventSubTypesByEventTypes(
+    eventTypesId: string,
+  ): Promise<EventSubTypesCount> {
+    const counts = await this.eventSubTypesModel.count({
+      where: { eventTypesId },
+    });
     const eventCount = new EventSubTypesCount();
     eventCount.count = counts;
     return eventCount;

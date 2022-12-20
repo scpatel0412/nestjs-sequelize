@@ -63,12 +63,16 @@ export class EventTypesService {
   }
 
   public async getEventTypes(): Promise<Array<EventTypesModel>> {
-    const eventsInput = await this.eventTypesModel.findAll();
+    const eventsInput = await this.eventTypesModel
+      .scope([{ method: ['event_sub_types'] }])
+      .findAll();
     return eventsInput;
   }
 
   public async getEventType(id: string): Promise<EventTypesModel> {
-    const eventsInput = await this.eventTypesModel.findOne({ where: { id } });
+    const eventsInput = await this.eventTypesModel
+      .scope([{ method: ['event_sub_types'] }])
+      .findOne({ where: { id } });
     return eventsInput;
   }
 
