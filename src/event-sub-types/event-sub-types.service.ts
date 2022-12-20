@@ -91,7 +91,10 @@ export class EventSubTypesService {
 
   public async getEventSubType(id: string): Promise<EventSubTypesModel> {
     const eventsModel = await this.eventSubTypesModel
-      .scope([{ method: ['event_types'] }])
+      .scope([
+        { method: ['event_types'] },
+        { method: ['events_sub_types_events'] },
+      ])
       .findOne({
         where: { id },
       });
@@ -100,7 +103,10 @@ export class EventSubTypesService {
 
   public async getEventSubTypes(): Promise<Array<EventSubTypesModel>> {
     const eventsModel = await this.eventSubTypesModel
-      .scope([{ method: ['event_types'] }])
+      .scope([
+        { method: ['event_types'] },
+        { method: ['events_sub_types_events'] },
+      ])
       .findAll();
     return eventsModel;
   }

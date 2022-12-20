@@ -6,6 +6,7 @@ import { CreateUsersEventsInput } from './dto/create-users-events.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { EventsModel } from './model/events.model';
 import { UsersEventsModel } from './model/users-events.model';
+import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
 
 @Injectable()
 export class EventsService {
@@ -14,25 +15,39 @@ export class EventsService {
     private sequelize: Sequelize,
     @InjectModel(UsersEventsModel)
     private usersEventsModel: typeof UsersEventsModel,
+    @InjectModel(EventSubTypesModel)
+    private eventSubTypesModel: typeof EventSubTypesModel,
   ) {}
 
   public async createEvent(events: CreateEventInput): Promise<EventsModel> {
-    const eventInput = new EventsModel();
-    eventInput.title = events.title;
-    eventInput.description = events.description;
-    eventInput.image = events.image;
-    eventInput.city = events.city;
-    eventInput.status = events.status;
-    eventInput.country = events.country;
-    eventInput.state = events.state;
-    eventInput.event_time = events.event_time;
-    eventInput.event_date = events.event_date;
-    eventInput.userId = events.userId;
-    eventInput.contact = events.contact;
-    eventInput.address = events.address;
+    const eventSubResults = await this.eventSubTypesModel.findOne({
+      where: { value_info: events.event_sub_type_name },
+    });
+    if (!eventSubResults) {
+      throw new NotFoundException(
+        `${events.event_sub_type_name} event sub type not found`,
+      );
+    } else {
+      const eventInput = new EventsModel();
+      eventInput.title = events.title;
+      eventInput.description = events.description;
+      eventInput.image = events.image;
+      eventInput.city = events.city;
+      eventInput.status = events.status;
+      eventInput.country = events.country;
+      eventInput.state = events.state;
+      eventInput.event_time = events.event_time;
+      eventInput.event_date = events.event_date;
+      eventInput.userId = events.userId;
+      eventInput.contact = events.contact;
+      eventInput.address = events.address;
+      eventInput.eventSubTypesId = eventSubResults.dataValues.id;
 
-    const eventsResults = await this.eventsModel.create(eventInput.dataValues);
-    return eventsResults;
+      const eventsResults = await this.eventsModel.create(
+        eventInput.dataValues,
+      );
+      return eventsResults;
+    }
   }
 
   public async updateEvent(
@@ -72,14 +87,22 @@ export class EventsService {
 
   public async getEvents(): Promise<Array<EventsModel>> {
     const eventInput = await this.eventsModel
-      .scope([{ method: ['users'] }, { method: ['user_events'] }])
+      .scope([
+        { method: ['users'] },
+        { method: ['user_events'] },
+        { method: ['event_sub_types'] },
+      ])
       .findAll();
     return eventInput;
   }
 
   public async getEvent(id: string): Promise<EventsModel> {
     const eventInput = await this.eventsModel
-      .scope([{ method: ['users'] }, { method: ['user_events'] }])
+      .scope([
+        { method: ['users'] },
+        { method: ['user_events'] },
+        { method: ['event_sub_types'] },
+      ])
       .findOne({ where: { id } });
     return eventInput;
   }

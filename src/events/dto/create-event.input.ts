@@ -63,4 +63,9 @@ export class CreateEventInput {
   @IsString()
   @Field(() => String)
   userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  event_sub_type_name: string;
 }
