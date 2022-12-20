@@ -42,6 +42,29 @@ type UsersEvents {
   is_active: Boolean!
 }
 
+type EventTypes {
+  id: String!
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
+  event_sub_types: [EventSubTypes!]
+}
+
+type EventSubTypes {
+  id: String!
+  name: String!
+  image: String!
+  value_info: String!
+  description: String!
+  title: String!
+  meta_title: String!
+  meta_description: String!
+  status: Boolean!
+  event_types: EventTypes!
+  events_sub_types_events: [Events!]
+}
+
 type Events {
   id: String!
   image: String!
@@ -57,6 +80,7 @@ type Events {
   event_time: String!
   users: User!
   user_events: [User!]!
+  event_sub_types: EventSubTypes
 }
 
 """
@@ -124,28 +148,6 @@ type PostCommentCount {
 
 type UserRoleCount {
   count: Int!
-}
-
-type EventSubTypes {
-  id: String!
-  name: String!
-  image: String!
-  value_info: String!
-  description: String!
-  title: String!
-  meta_title: String!
-  meta_description: String!
-  status: Boolean!
-  event_types: EventTypes!
-}
-
-type EventTypes {
-  id: String!
-  name: String!
-  value_info: String!
-  description: String!
-  status: Boolean!
-  event_sub_types: [EventSubTypes!]
 }
 
 type EventTypesCount {
@@ -295,6 +297,7 @@ input CreateEventInput {
   event_date: DateTime!
   event_time: String!
   userId: String!
+  event_sub_type_name: String!
 }
 
 input UpdateEventInput {

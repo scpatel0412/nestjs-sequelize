@@ -5,12 +5,14 @@ import {
   CreatedAt,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Scopes,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 import { EventTypesModel } from 'src/event-types/model/event-types.model';
+import { EventsModel } from 'src/events/model/events.model';
 
 @Scopes({
   event_types: () => {
@@ -18,6 +20,17 @@ import { EventTypesModel } from 'src/event-types/model/event-types.model';
       include: {
         model: EventTypesModel,
         as: 'event_types',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  events_sub_types_events: () => {
+    return {
+      include: {
+        model: EventsModel,
+        as: 'events_sub_types_events',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -107,4 +120,8 @@ export class EventSubTypesModel extends Model<EventSubTypesModel> {
   @Field(() => EventTypesModel)
   @BelongsTo(() => EventTypesModel)
   event_types: EventTypesModel;
+
+  @Field(() => [EventsModel], { nullable: true })
+  @HasMany(() => EventsModel)
+  events_sub_types_events: EventsModel[];
 }

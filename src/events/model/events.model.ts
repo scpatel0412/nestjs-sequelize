@@ -14,6 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { UserModel } from 'src/user/model/user.model';
 import { UsersEventsModel } from './users-events.model';
+import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
 
 @Scopes({
   users: () => {
@@ -32,6 +33,17 @@ import { UsersEventsModel } from './users-events.model';
       include: {
         model: UserModel,
         as: 'user_events',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  event_sub_types: () => {
+    return {
+      include: {
+        model: EventSubTypesModel,
+        as: 'event_sub_types',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -146,4 +158,12 @@ export class EventsModel extends Model<EventsModel> {
   @Field(() => [UserModel])
   @BelongsToMany(() => UserModel, () => UsersEventsModel)
   user_events: UserModel[];
+
+  @ForeignKey(() => EventSubTypesModel)
+  @Column({ field: 'event_sub_types_id' })
+  eventSubTypesId: string;
+
+  @Field(() => EventSubTypesModel, { nullable: true })
+  @BelongsTo(() => EventSubTypesModel)
+  event_sub_types: EventSubTypesModel;
 }
