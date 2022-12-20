@@ -126,18 +126,6 @@ type UserRoleCount {
   count: Int!
 }
 
-type EventTypes {
-  id: String!
-  name: String!
-  value_info: String!
-  description: String!
-  status: Boolean!
-}
-
-type EventTypesCount {
-  count: Int!
-}
-
 type EventSubTypes {
   id: String!
   name: String!
@@ -148,6 +136,20 @@ type EventSubTypes {
   meta_title: String!
   meta_description: String!
   status: Boolean!
+  event_types: EventTypes!
+}
+
+type EventTypes {
+  id: String!
+  name: String!
+  value_info: String!
+  description: String!
+  status: Boolean!
+  event_sub_types: [EventSubTypes!]
+}
+
+type EventTypesCount {
+  count: Int!
 }
 
 type EventSubTypesCount {
@@ -185,6 +187,7 @@ type Query {
   getEventSubType(id: String!): EventSubTypes!
   getEventSubTypes: [EventSubTypes!]!
   countEventSubTypes: EventSubTypesCount!
+  countEventSubTypesByEventTypes(event_types_id: String!): EventSubTypesCount!
 }
 
 type Mutation {
@@ -351,6 +354,7 @@ input CreateEventSubTypeInput {
   meta_title: String!
   meta_description: String!
   status: Boolean!
+  event_type_value: String!
 }
 
 input UpdateEventSubTypeInput {

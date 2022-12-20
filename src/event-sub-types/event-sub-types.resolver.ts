@@ -57,4 +57,14 @@ export class EventSubTypesResolver {
   countEventSubTypes() {
     return this.eventSubTypesService.countEventSubTypes();
   }
+
+  @AllowUnauthorized()
+  @Query(() => EventSubTypesCount)
+  countEventSubTypesByEventTypes(
+    @Args('event_types_id') event_types_id: string,
+  ) {
+    return this.eventSubTypesService.countEventSubTypesByEventTypes(
+      event_types_id,
+    );
+  }
 }

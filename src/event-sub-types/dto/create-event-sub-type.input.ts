@@ -42,4 +42,9 @@ export class CreateEventSubTypeInput {
   @IsBoolean()
   @Field(() => Boolean)
   status: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
+  event_type_value: string;
 }

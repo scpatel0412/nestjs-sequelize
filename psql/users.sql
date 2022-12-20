@@ -18,3 +18,5 @@ alter table post_likes add column user_id uuid;
 alter table post_likes ADD CONSTRAINT fk_post_like_user FOREIGN KEY(user_id) REFERENCES users(id);
 create table event_types(id uuid default uuid_generate_v4(),name varchar not null,value_info varchar not null,description varchar not null,status boolean,created_at date,updated_at date,PRIMARY KEY(id) );
 create table event_sub_types(id uuid default uuid_generate_v4(),name varchar not null,value_info varchar not null,description varchar not null,title varchar not null,meta_title varchar not null,meta_description varchar not null,image varchar not null,status boolean,created_at date,updated_at date,PRIMARY KEY(id) );
+alter table event_sub_types add column event_types_id uuid;
+alter table event_sub_types ADD CONSTRAINT fk_event_types_id FOREIGN KEY(event_types_id) REFERENCES event_types(id);
