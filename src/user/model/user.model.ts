@@ -13,6 +13,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
+import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
 import { EventsModel } from 'src/events/model/events.model';
 import { UsersEventsModel } from 'src/events/model/users-events.model';
 import { PostCommentModel } from 'src/post-comment/model/post-comment.model';
@@ -36,6 +37,13 @@ import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
       include: {
         model: EventsModel,
         as: 'event_created',
+        include: [
+          {
+            model: EventSubTypesModel,
+            as: 'event_sub_types',
+            required: false,
+          },
+        ],
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },

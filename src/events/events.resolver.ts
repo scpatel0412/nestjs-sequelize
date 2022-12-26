@@ -6,6 +6,7 @@ import { CreateUsersEventsInput } from './dto/create-users-events.input';
 import { EventsModel } from './model/events.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 import { UsersEventsModel } from './model/users-events.model';
+import { GqlAuthId } from 'src/auth/decorators/gql-auth-id.decorator';
 
 @Resolver(() => EventsModel)
 export class EventsResolver {
@@ -51,5 +52,10 @@ export class EventsResolver {
   @Query(() => EventsModel)
   getEvent(@Args('id') id: string) {
     return this.eventsService.getEvent(id);
+  }
+
+  @Query(() => [EventsModel])
+  getPlannerCreatedEvents(@GqlAuthId() userId: string) {
+    return this.eventsService.getPlannerCreatedEvents(userId);
   }
 }
