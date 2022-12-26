@@ -120,4 +120,17 @@ export class EventsService {
     );
     return eventsResults;
   }
+
+  public async getPlannerCreatedEvents(
+    userId: string,
+  ): Promise<Array<EventsModel>> {
+    const eventInput = await this.eventsModel
+      .scope([
+        { method: ['users'] },
+        { method: ['user_events'] },
+        { method: ['event_sub_types'] },
+      ])
+      .findAll({ where: { userId } });
+    return eventInput;
+  }
 }
