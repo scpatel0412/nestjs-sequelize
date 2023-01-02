@@ -15,6 +15,7 @@ import { EventsModule } from './events/events.module';
 import { UserRolesModule } from './user-roles/user-roles.module';
 import { EventTypesModule } from './event-types/event-types.module';
 import { EventSubTypesModule } from './event-sub-types/event-sub-types.module';
+import { EventsRatingModule } from './events-rating/events-rating.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -64,6 +65,7 @@ import { EventSubTypesModule } from './event-sub-types/event-sub-types.module';
     UserRolesModule,
     EventTypesModule,
     EventSubTypesModule,
+    EventsRatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

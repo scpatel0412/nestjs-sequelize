@@ -15,6 +15,7 @@ import {
 import { UserModel } from 'src/user/model/user.model';
 import { UsersEventsModel } from './users-events.model';
 import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
+import { EventsRatingModel } from 'src/events-rating/model/events-rating.model';
 
 @Scopes({
   users: () => {
@@ -44,6 +45,17 @@ import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.mo
       include: {
         model: EventSubTypesModel,
         as: 'event_sub_types',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  events_rating_event: () => {
+    return {
+      include: {
+        model: EventsRatingModel,
+        as: 'events_rating_event',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -166,4 +178,8 @@ export class EventsModel extends Model<EventsModel> {
   @Field(() => EventSubTypesModel, { nullable: true })
   @BelongsTo(() => EventSubTypesModel)
   event_sub_types: EventSubTypesModel;
+
+  @Field(() => [EventsRatingModel], { nullable: true })
+  @HasMany(() => EventsRatingModel)
+  events_rating_event: EventsRatingModel[];
 }

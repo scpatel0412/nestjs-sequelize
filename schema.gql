@@ -51,6 +51,15 @@ type UsersEvents {
   is_active: Boolean!
 }
 
+type EventsRatingModel {
+  id: String!
+  rating_comment: String!
+  rating_number: Int!
+  status: Boolean!
+  rated_events: Events
+  rated_user: User
+}
+
 type Events {
   id: String!
   image: String!
@@ -67,6 +76,7 @@ type Events {
   users: User!
   user_events: [User!]!
   event_sub_types: EventSubTypes
+  events_rating_event: [EventsRatingModel!]
 }
 
 """
@@ -118,6 +128,7 @@ type User {
   users_posts_likes: [CelestialPost!]
   user_comments: [PostComment!]
   users_posts_comments: [CelestialPost!]
+  events_rating_user: [EventsRatingModel!]
 }
 
 type UserCount {
@@ -191,6 +202,10 @@ type Query {
   getEventSubTypes: [EventSubTypes!]!
   countEventSubTypes: EventSubTypesCount!
   countEventSubTypesByEventTypes(event_types_id: String!): EventSubTypesCount!
+  getEventsRating(id: String!): EventsRatingModel!
+  getEventsRatings: [EventsRatingModel!]!
+  getEventsRatingsByUser: [EventsRatingModel!]!
+  getEventsRatingsByEvent(event_id: String!): [EventsRatingModel!]!
 }
 
 type Mutation {
@@ -221,6 +236,9 @@ type Mutation {
   createEventSubTypes(createEventSubTypeInput: CreateEventSubTypeInput!): EventSubTypes!
   updateEventSubTypes(id: String!, updateEventSubTypeInput: UpdateEventSubTypeInput!): EventSubTypes!
   deleteEventSubTypes(id: String!): EventSubTypes!
+  createEventsRating(createEventsRatingInput: CreateEventsRatingInput!): EventsRatingModel!
+  updateEventsRating(id: String!, updateEventsRatingInput: UpdateEventsRatingInput!): EventsRatingModel!
+  deleteEventsRating(id: String!): EventsRatingModel!
 }
 
 input CreateUserInput {
@@ -369,5 +387,19 @@ input UpdateEventSubTypeInput {
   image: String!
   meta_title: String!
   meta_description: String!
+  status: Boolean!
+}
+
+input CreateEventsRatingInput {
+  rating_comment: String!
+  rating_number: Int!
+  status: Boolean!
+  user_id: String!
+  event_id: String!
+}
+
+input UpdateEventsRatingInput {
+  rating_comment: String!
+  rating_number: Int!
   status: Boolean!
 }
