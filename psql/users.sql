@@ -22,3 +22,4 @@ alter table event_sub_types add column event_types_id uuid;
 alter table event_sub_types ADD CONSTRAINT fk_event_types_id FOREIGN KEY(event_types_id) REFERENCES event_types(id);
 alter table events add column event_sub_types_id uuid;
 alter table events ADD CONSTRAINT fk_event_sub_types_id FOREIGN KEY(event_sub_types_id) REFERENCES event_sub_types(id);
+create table event_ratings(id uuid default uuid_generate_v4(), rating_comment text not null, rating_number int not null, status boolean,created_at date,updated_at date, user_id uuid, event_id uuid, PRIMARY KEY(id), CONSTRAINT fk_ratings_user FOREIGN KEY(user_id) REFERENCES users(id), CONSTRAINT fk_ratings_events FOREIGN KEY(event_id) REFERENCES events(id) );

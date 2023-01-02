@@ -69,6 +69,7 @@ export class UserService {
         { method: ['users_posts_likes'] },
         { method: ['user_comments'] },
         { method: ['users_posts_comments'] },
+        { method: ['events_rating_user'] },
       ])
       .findAll();
     return user;
@@ -85,6 +86,7 @@ export class UserService {
         { method: ['users_posts_likes'] },
         { method: ['user_comments'] },
         { method: ['users_posts_comments'] },
+        { method: ['events_rating_user'] },
       ])
       .findOne({ where: { id } });
     return user;
