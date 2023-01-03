@@ -6,6 +6,7 @@ import { UserModel } from 'src/user/model/user.model';
 import { EventsModel } from 'src/events/model/events.model';
 import { EventsRatingModel } from './model/events-rating.model';
 import { Sequelize } from 'sequelize-typescript';
+import { AverageEventsRatingModel } from './model/average-events-rating.model';
 
 @Injectable()
 export class EventsRatingService {
@@ -122,5 +123,72 @@ export class EventsRatingService {
       .scope([{ method: ['rated_user'] }, { method: ['rated_events'] }])
       .findAll({ where: { event_id } });
     return eventResults;
+  }
+
+  public async getAllStarRatingsOfSpecificEvent(
+    event_id: string,
+  ): Promise<AverageEventsRatingModel> {
+    const totalStarRating = await this.eventsRatingModel.count({
+      where: { event_id },
+    });
+    const fiveStarRating = await this.eventsRatingModel.count({
+      where: { event_id, rating_number: 5 },
+    });
+    const fourStarRating = await this.eventsRatingModel.count({
+      where: { event_id, rating_number: 4 },
+    });
+    const threeStarRating = await this.eventsRatingModel.count({
+      where: { event_id, rating_number: 3 },
+    });
+    const twoStarRating = await this.eventsRatingModel.count({
+      where: { event_id, rating_number: 2 },
+    });
+    const oneStarRating = await this.eventsRatingModel.count({
+      where: { event_id, rating_number: 1 },
+    });
+    const fiveStarAvg = parseFloat(
+      String((fiveStarRating / totalStarRating) * 100),
+    ).toFixed(2);
+
+    const fourStarAvg = parseFloat(
+      String((fourStarRating / totalStarRating) * 100),
+    ).toFixed(2);
+
+    const threeStarAvg = parseFloat(
+      String((threeStarRating / totalStarRating) * 100),
+    ).toFixed(2);
+
+    const twoStarAvg = parseFloat(
+      String((twoStarRating / totalStarRating) * 100),
+    ).toFixed(2);
+
+    const oneStarAvg = parseFloat(
+      String((oneStarRating / totalStarRating) * 100),
+    ).toFixed(2);
+
+    const Score =
+      fiveStarRating * 5 +
+      fourStarRating * 4 +
+      threeStarRating * 3 +
+      twoStarRating * 2 +
+      oneStarRating * 1;
+
+    const totalResponse =
+      fiveStarRating +
+      fourStarRating +
+      threeStarRating +
+      twoStarRating +
+      oneStarRating;
+
+    const ratingAvg = parseFloat(String(Score / totalResponse)).toFixed(2);
+
+    const ratingList = new AverageEventsRatingModel();
+    ratingList.avg_rating = ratingAvg;
+    ratingList.five_star = fiveStarAvg;
+    ratingList.four_star = fourStarAvg;
+    ratingList.three_star = threeStarAvg;
+    ratingList.two_star = twoStarAvg;
+    ratingList.one_star = oneStarAvg;
+    return ratingList;
   }
 }

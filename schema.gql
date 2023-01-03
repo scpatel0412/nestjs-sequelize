@@ -169,6 +169,15 @@ type EventSubTypesCount {
   count: Int!
 }
 
+type AverageEventsRatingModel {
+  avg_rating: String!
+  five_star: String!
+  four_star: String!
+  three_star: String!
+  two_star: String!
+  one_star: String!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
@@ -206,6 +215,7 @@ type Query {
   getEventsRatings: [EventsRatingModel!]!
   getEventsRatingsByUser: [EventsRatingModel!]!
   getEventsRatingsByEvent(event_id: String!): [EventsRatingModel!]!
+  getAllStarRatingsOfSpecificEvent(event_id: String!): AverageEventsRatingModel!
 }
 
 type Mutation {
