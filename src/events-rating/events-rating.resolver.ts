@@ -5,6 +5,7 @@ import { UpdateEventsRatingInput } from './dto/update-events-rating.input';
 import { EventsRatingModel } from './model/events-rating.model';
 import { AllowUnauthorized } from 'src/auth/decorators/allow-unauthorized.decorator';
 import { GqlAuthId } from 'src/auth/decorators/gql-auth-id.decorator';
+import { AverageEventsRatingModel } from './model/average-events-rating.model';
 
 @Resolver(() => EventsRatingModel)
 export class EventsRatingResolver {
@@ -59,5 +60,11 @@ export class EventsRatingResolver {
   @Query(() => [EventsRatingModel])
   getEventsRatingsByEvent(@Args('event_id') event_id: string) {
     return this.eventsRatingService.getEventsRatingsByEvent(event_id);
+  }
+
+  @AllowUnauthorized()
+  @Query(() => AverageEventsRatingModel)
+  getAllStarRatingsOfSpecificEvent(@Args('event_id') event_id: string) {
+    return this.eventsRatingService.getAllStarRatingsOfSpecificEvent(event_id);
   }
 }
