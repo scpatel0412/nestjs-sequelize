@@ -60,6 +60,15 @@ type EventsRatingModel {
   rated_user: User
 }
 
+type EventsFeedbackModel {
+  id: String!
+  title: String!
+  description: String!
+  status: Boolean!
+  feedback_events: Events
+  feedback_user: User
+}
+
 type Events {
   id: String!
   image: String!
@@ -77,6 +86,7 @@ type Events {
   user_events: [User!]!
   event_sub_types: EventSubTypes
   events_rating_event: [EventsRatingModel!]
+  events_feedback_event: [EventsFeedbackModel!]
 }
 
 """
@@ -129,6 +139,7 @@ type User {
   user_comments: [PostComment!]
   users_posts_comments: [CelestialPost!]
   events_rating_user: [EventsRatingModel!]
+  events_feedback_user: [EventsFeedbackModel!]
 }
 
 type UserCount {
@@ -216,6 +227,8 @@ type Query {
   getEventsRatingsByUser: [EventsRatingModel!]!
   getEventsRatingsByEvent(event_id: String!): [EventsRatingModel!]!
   getAllStarRatingsOfSpecificEvent(event_id: String!): AverageEventsRatingModel!
+  getEventsFeedback(id: String!): EventsFeedbackModel!
+  getEventsFeedbacks: [EventsFeedbackModel!]!
 }
 
 type Mutation {
@@ -249,6 +262,9 @@ type Mutation {
   createEventsRating(createEventsRatingInput: CreateEventsRatingInput!): EventsRatingModel!
   updateEventsRating(id: String!, updateEventsRatingInput: UpdateEventsRatingInput!): EventsRatingModel!
   deleteEventsRating(id: String!): EventsRatingModel!
+  createEventsFeedback(createEventsFeedbackInput: CreateEventsFeedbackInput!): EventsFeedbackModel!
+  updateEventsFeedback(id: String!, updateEventsFeedbackInput: UpdateEventsFeedbackInput!): EventsFeedbackModel!
+  deleteEventsFeedback(id: String!): EventsFeedbackModel!
 }
 
 input CreateUserInput {
@@ -411,5 +427,19 @@ input CreateEventsRatingInput {
 input UpdateEventsRatingInput {
   rating_comment: String!
   rating_number: Int!
+  status: Boolean!
+}
+
+input CreateEventsFeedbackInput {
+  title: String!
+  description: String!
+  status: Boolean!
+  user_id: String!
+  event_id: String!
+}
+
+input UpdateEventsFeedbackInput {
+  title: String!
+  description: String!
   status: Boolean!
 }
