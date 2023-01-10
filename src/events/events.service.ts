@@ -92,6 +92,7 @@ export class EventsService {
         { method: ['user_events'] },
         { method: ['event_sub_types'] },
         { method: ['events_rating_event'] },
+        { method: ['events_feedback_event'] },
       ])
       .findAll();
     return eventInput;
@@ -104,6 +105,7 @@ export class EventsService {
         { method: ['user_events'] },
         { method: ['event_sub_types'] },
         { method: ['events_rating_event'] },
+        { method: ['events_feedback_event'] },
       ])
       .findOne({ where: { id } });
     return eventInput;
@@ -132,6 +134,7 @@ export class EventsService {
         { method: ['user_events'] },
         { method: ['event_sub_types'] },
         { method: ['events_rating_event'] },
+        { method: ['events_feedback_event'] },
       ])
       .findAll({ where: { userId } });
     return eventInput;

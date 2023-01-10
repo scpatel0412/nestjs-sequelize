@@ -14,6 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { CelestialPostModel } from 'src/celestial-post/model/celestial-post.model';
 import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
+import { EventsFeedbackModel } from 'src/events-feedback/model/events-feedback.model';
 import { EventsRatingModel } from 'src/events-rating/model/events-rating.model';
 import { EventsModel } from 'src/events/model/events.model';
 import { UsersEventsModel } from 'src/events/model/users-events.model';
@@ -122,6 +123,17 @@ import { UserRolesModel } from 'src/user-roles/model/user-roles.model';
       include: {
         model: EventsRatingModel,
         as: 'events_rating_user',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  events_feedback_user: () => {
+    return {
+      include: {
+        model: EventsFeedbackModel,
+        as: 'events_feedback_user',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -258,4 +270,8 @@ export class UserModel extends Model<UserModel> {
   @Field(() => [EventsRatingModel], { nullable: true })
   @HasMany(() => EventsRatingModel)
   events_rating_user: EventsRatingModel[];
+
+  @Field(() => [EventsFeedbackModel], { nullable: true })
+  @HasMany(() => EventsFeedbackModel)
+  events_feedback_user: EventsFeedbackModel[];
 }

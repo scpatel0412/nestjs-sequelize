@@ -16,6 +16,7 @@ import { UserModel } from 'src/user/model/user.model';
 import { UsersEventsModel } from './users-events.model';
 import { EventSubTypesModel } from 'src/event-sub-types/model/event-sub-types.model';
 import { EventsRatingModel } from 'src/events-rating/model/events-rating.model';
+import { EventsFeedbackModel } from 'src/events-feedback/model/events-feedback.model';
 
 @Scopes({
   users: () => {
@@ -56,6 +57,17 @@ import { EventsRatingModel } from 'src/events-rating/model/events-rating.model';
       include: {
         model: EventsRatingModel,
         as: 'events_rating_event',
+        attributes: {
+          exclude: ['created_at', 'updated_at'],
+        },
+      },
+    };
+  },
+  events_feedback_event: () => {
+    return {
+      include: {
+        model: EventsFeedbackModel,
+        as: 'events_feedback_event',
         attributes: {
           exclude: ['created_at', 'updated_at'],
         },
@@ -182,4 +194,8 @@ export class EventsModel extends Model<EventsModel> {
   @Field(() => [EventsRatingModel], { nullable: true })
   @HasMany(() => EventsRatingModel)
   events_rating_event: EventsRatingModel[];
+
+  @Field(() => [EventsFeedbackModel], { nullable: true })
+  @HasMany(() => EventsFeedbackModel)
+  events_feedback_event: EventsFeedbackModel[];
 }
